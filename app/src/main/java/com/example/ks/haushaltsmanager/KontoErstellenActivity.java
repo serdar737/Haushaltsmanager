@@ -26,10 +26,9 @@ public class KontoErstellenActivity extends AppCompatActivity {
         btn_kontoeroeffnen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: Entscheiden wo man nach Registrierung landet und welche Werte dann uebergeben werden muessen
-                //Intent intent = new Intent(KontoErstellenActivity.this, .class);
+                Intent intent = new Intent(KontoErstellenActivity.this, HaushaltBeitretenActivity.class);
                 //intent.putExtra("BENUTZERNAME_UEBERGABE", benutzername);
-                //startActivity(intent);
+                startActivity(intent);
 
             }
         });

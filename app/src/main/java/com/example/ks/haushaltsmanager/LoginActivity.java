@@ -1,5 +1,6 @@
 package com.example.ks.haushaltsmanager;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,14 +32,15 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 benutzername = et_benutzername.getText().toString();
                 passwort = et_passwortlogin.getText().toString();
-                new ActivityDataSource(btn_login).execute("someParams");
+                //new ActivityDataSource(btn_login).execute("someParams");
             }
         });
 
         btn_neueskonto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(LoginActivity.this, KontoErstellenActivity.class);
+                startActivity(intent);
             }
         });
     }

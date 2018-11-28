@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Haushaltsmanager</string>
+    <string name="hello">hello</string>
+    <string name="verbindung">verbindung</string>
+    <string name="lesenBtnText">Lesen</string>
+    <string name="tv_haushaltbeitreten1_text">Trete einem bestehenden</string>
+    <string name="tv_haushaltbeitreten2_text">Haushalt bei</string>
+    <string name="haushaltsid">Haushalts-ID</string>
+    <string name="passwort">Passwort</string>
+    <string name="haushaltbeitreten">Beitreten</string>
+    <string name="abbruch">Abbruch</string>
+    <string name="hilfe">Hilfe</string>
+    <string name="login">Login</string>
+    <string name="benutzername">Benutzername</string>
+    <string name="neueskonto">Neues Konto erstellen</string>
+    <string name="kontoerstellen1">Erstelle dir ein</string>
+    <string name="kontoerstellen2">Benutzerkonto!</string>
+    <string name="name">Name</string>
+    <string name="email">E-Mail</string>
+    <string name="neuenhaushalterstellen">Neuen Haushalt erstellen</string>
+    <string name="exishaushaltbeitreten">Existierendem Haushalt beitreten</string>
+    <string name="erstellehaushalt">Erstelle einen neuen</string>
+    <string name="haushalt">Haushalt</string>
+    <string name="namehaushalt">Name des Haushaltes</string>
+    <string name="anschriftoptional">Anschrift (optional)</string>
+    <string name="beschreibungoptional">Beschreibung (optional)</string>
 </resources>

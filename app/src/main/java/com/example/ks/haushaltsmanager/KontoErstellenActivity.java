@@ -70,6 +70,7 @@ public class KontoErstellenActivity extends AppCompatActivity {
                     }
                 };
 
+                //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
                 requestQueue.add(srequest);
 
 

@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_neueskonto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, HaushaltErstellenActivity.class);
+                Intent intent = new Intent(LoginActivity.this, KontoErstellenActivity.class);
                 startActivity(intent);
             }
         });

@@ -17,6 +17,7 @@ import com.android.volley.Response;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class KontoErstellenActivity extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class KontoErstellenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_konto_erstellen);
 
         et_benutzername = findViewById(R.id.et_benutzernameerstellen);
@@ -73,9 +75,6 @@ public class KontoErstellenActivity extends AppCompatActivity {
                 //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
                 requestQueue.add(srequest);
 
-
-
-                System.out.println("Benutzername: "+benutzername+" Nname: "+name+" Passwort: "+passwort);
                 Intent intent = new Intent(KontoErstellenActivity.this, HaushaltBeitretenActivity.class);
                 //intent.putExtra("BENUTZERNAME_UEBERGABE", benutzername);
                 startActivity(intent);

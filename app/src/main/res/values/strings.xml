@@ -24,4 +24,10 @@
     <string name="namehaushalt">Name des Haushaltes</string>
     <string name="anschriftoptional">Anschrift (optional)</string>
     <string name="beschreibungoptional">Beschreibung (optional)</string>
+    <string name="einkaufsliste">Einkaufsliste des Haushaltes</string>
+    <string name="rezepte">Rezepte des Haushaltes</string>
+    <string name="einstellungen">Einstellungen</string>
+    <string name="hallo">Hallo</string>
+    <string name="benutzer">Benutzer</string>
+    <string name="aktuellerhaushalt">Aktueller Haushalt</string>
 </resources>

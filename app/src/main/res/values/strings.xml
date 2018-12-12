@@ -30,4 +30,9 @@
     <string name="hallo">Hallo</string>
     <string name="benutzer">Benutzer</string>
     <string name="aktuellerhaushalt">Aktueller Haushalt</string>
+    <string name="neuerartikel">Füge einen neuen Artikel hinzu</string>
+    <string name="artikelname">Artikelname</string>
+    <string name="artikelhinzufuegenbutton">Artikel hinzufügen</string>
+    <string name="menge">Menge</string>
+    <string name="kaufhaeufigkeit">Kaufhäufigkeit (optional)</string>
 </resources>

@@ -77,12 +77,16 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
 
                 //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
                 requestQueue.add(srequest);
+
+                Intent intent = new Intent(HaushaltErstellenActivity.this, HauptmenueActivity.class);
+                startActivity(intent);
             }
         });
 
         btn_haushaltbeitreten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(HaushaltErstellenActivity.this, HaushaltBeitretenActivity.class);
                 startActivity(intent);
             }

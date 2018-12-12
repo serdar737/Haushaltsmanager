@@ -35,12 +35,15 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(HaushaltBeitretenActivity.this, HauptmenueActivity.class);
+                startActivity(intent);
             }
         });
 
         btn_neuenhaushalt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(HaushaltBeitretenActivity.this, HaushaltErstellenActivity.class);
                 startActivity(intent);
             }
@@ -49,6 +52,7 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
         btn_hilfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(HaushaltBeitretenActivity.this, HilfeActivity.class);
                 startActivity(intent);
             }

@@ -18,7 +18,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
     TextView tv_benutzername, tv_haushaltsname;
     FloatingActionButton fab_artikelhinzufuegen;
-    LinearLayout lleinkaufsliste;
+    LinearLayout linearlayoutartikel;
     Button btn_weiter;
     EditText et_artikelname, et_menge, et_kaufhaeufigkeit;
     String artikelname, menge;
@@ -32,7 +32,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
         tv_benutzername = findViewById(R.id.tv_benutzernameeinkauf);
         tv_haushaltsname = findViewById(R.id.tv_haushalteinkauf);
         fab_artikelhinzufuegen = findViewById(R.id.fab_artikelhinzufuegen);
-        lleinkaufsliste = findViewById(R.id.linearlayouteinkaufsliste);
+        linearlayoutartikel = findViewById(R.id.linearlayoutartikel);
 
 
         fab_artikelhinzufuegen.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +69,6 @@ public class EinkaufslisteActivity extends AppCompatActivity {
     public void artikelCheckBoxNeu() {
         CheckBox checkbox = new CheckBox(getApplicationContext());
         checkbox.setText(artikelname);
-        lleinkaufsliste.addView(checkbox);
+        linearlayoutartikel.addView(checkbox);
     }
 }

@@ -46,20 +46,29 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                 et_menge = popupview.findViewById(R.id.et_menge);
                 et_kaufhaeufigkeit = popupview.findViewById(R.id.et_kaufhaeufigkeit);
 
+                popupbuilder.setView(popupview);
+                final AlertDialog dialog = popupbuilder.create();
+
                 btn_weiter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         artikelname = et_artikelname.getText().toString();
                         menge = et_menge.getText().toString();
-                        //TODO: CheckBoxen dem LinearLayout hinzufuegen udns chauen warum es abstuerzt
-
+                        artikelCheckBoxNeu();
+                        dialog.hide();
                     }
                 });
 
-                popupbuilder.setView(popupview);
-                AlertDialog dialog = popupbuilder.create();
+
                 dialog.show();
             }
         });
+    }
+
+    public void artikelCheckBoxNeu() {
+        CheckBox checkbox = new CheckBox(getApplicationContext());
+        checkbox.setText(artikelname);
+        lleinkaufsliste.addView(checkbox);
     }
 }

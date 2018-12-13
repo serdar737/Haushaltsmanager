@@ -33,22 +33,22 @@ public class EinkaufslisteActivity extends AppCompatActivity {
         tv_haushaltsname = findViewById(R.id.tv_haushalteinkauf);
         fab_artikelhinzufuegen = findViewById(R.id.fab_artikelhinzufuegen);
         lleinkaufsliste = findViewById(R.id.linearlayouteinkaufsliste);
-        btn_weiter = findViewById(R.id.btn_weiter_artikel);
-        et_artikelname = findViewById(R.id.et_artikelname);
-        et_menge = findViewById(R.id.et_menge);
-        et_kaufhaeufigkeit = findViewById(R.id.et_kaufhaeufigkeit);
+
 
         fab_artikelhinzufuegen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 AlertDialog.Builder popupbuilder = new AlertDialog.Builder(EinkaufslisteActivity.this);
-                View popupview = getLayoutInflater().inflate(R.layout.layout_popup_artikelhinzufuegen, null);
+                View popupview = getLayoutInflater().inflate(R.layout.popup_artikelhinzufuegen, null);
+                btn_weiter = popupview.findViewById(R.id.btn_weiter_artikel);
+                et_artikelname = popupview.findViewById(R.id.et_artikelname);
+                et_menge = popupview.findViewById(R.id.et_menge);
+                et_kaufhaeufigkeit = popupview.findViewById(R.id.et_kaufhaeufigkeit);
 
                 btn_weiter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         artikelname = et_artikelname.getText().toString();
                         menge = et_menge.getText().toString();
                         //TODO: CheckBoxen dem LinearLayout hinzufuegen udns chauen warum es abstuerzt

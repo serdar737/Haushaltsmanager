@@ -3,6 +3,7 @@ package com.example.ks.haushaltsmanager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,5 +27,19 @@ public class RezeptErstellenActivity extends AppCompatActivity {
         btn_rezepthinzufuegen = findViewById(R.id.btn_rezepterstellen);
         linearleayoutrezepterstellen = findViewById(R.id.linearlayoutrezepterstellen);
         fab_zutathinzufuegen = findViewById(R.id.fab_zutathinzufuegen);
+
+        fab_zutathinzufuegen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        btn_rezepthinzufuegen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 }

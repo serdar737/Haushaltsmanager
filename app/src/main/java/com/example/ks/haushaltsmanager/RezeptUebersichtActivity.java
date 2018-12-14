@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.Objects;
+
 public class RezeptUebersichtActivity extends AppCompatActivity {
 
     LinearLayout linearlayoutrezepteuebersicht;
@@ -16,6 +18,7 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_rezept_uebersicht);
 
         linearlayoutrezepteuebersicht = findViewById(R.id.linearlayoutartikel);

@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class RezeptBearbeitenActivity extends AppCompatActivity {
 
-    EditText et_rezeptname, et_zutat;
+    EditText et_zutat;
     String rezeptname;
     Button btn_rezepthinzufuegen, btn_zutathinzufuegen;
     LinearLayout linearleayoutrezepterstellen;
@@ -29,7 +29,6 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_rezept_bearbeiten);
 
-        et_rezeptname = findViewById(R.id.et_rezeptname);
         btn_rezepthinzufuegen = findViewById(R.id.btn_rezepterstellen);
         linearleayoutrezepterstellen = findViewById(R.id.linearlayoutrezepterstellen);
         fab_zutathinzufuegen = findViewById(R.id.fab_zutathinzufuegen);

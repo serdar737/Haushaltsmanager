@@ -6,116 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".RezeptErstellenActivity">
 
-    <TextView
-        android:id="@+id/tv_rezept1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="117dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="117dp"
-        android:text="@string/textneuesrezept"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_rezept2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="111dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="111dp"
-        android:text="@string/textneuesrezept2"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rezept1" />
-
-    <Button
-        android:id="@+id/btn_rezepterstellen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="147dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="147dp"
-        android:text="@string/neuesrezept"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
-
     <EditText
-        android:id="@+id/et_nameerstellen"
+        android:id="@+id/et_rezeptbenennen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="99dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="@string/beschreibung"
-        android:inputType="textMultiLine"
-        android:textAlignment="textStart"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rezept2" />
-
-    <ScrollView
-        android:id="@+id/scrollView3"
-        android:layout_width="395dp"
-        android:layout_height="254dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="23dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_rezepterstellen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_nameerstellen">
-
-        <LinearLayout
-            android:id="@+id/linearlayoutrezepterstellen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="125dp" />
-
-    <EditText
-        android:id="@+id/et_rezeptname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="99dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="62dp"
         android:ems="10"
         android:hint="@string/rezeptname"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/et_nameerstellen"
+        android:textAlignment="center"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rezept2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_rezeptnameerstellen" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_zutathinzufuegen"
+    <TextView
+        android:id="@+id/tv_rezeptnameerstellen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="12dp"
-        android:clickable="true"
-        app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView3"
-        app:layout_constraintEnd_toEndOf="@+id/scrollView3"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="94dp"
+        android:text="@string/gibdeinemrezepteinennamen"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_rezeptnameweiter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="161dp"
+        android:text="@string/neuesrezept"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_rezeptbenennen" />
+
+
 
 </android.support.constraint.ConstraintLayout>

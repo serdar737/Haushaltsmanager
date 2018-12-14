@@ -30,7 +30,8 @@
         <activity android:name=".EinstellungenActivity" />
         <activity android:name=".RezeptUebersichtActivity" />
         <activity android:name=".RezeptErstellenActivity" />
-        <activity android:name=".HaushaltsbestandActivity"></activity>
+        <activity android:name=".HaushaltsbestandActivity" />
+        <activity android:name=".RezeptBearbeitenActivity"></activity>
     </application>
 
 </manifest>

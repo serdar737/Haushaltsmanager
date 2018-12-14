@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_zutathinzufuegen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fuegeeinezutathinzu"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/et_zutat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/zutat"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/btn_zutathinzufuegenpopup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/zutathinzufuegen" />
+</LinearLayout>

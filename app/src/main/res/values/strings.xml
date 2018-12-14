@@ -40,4 +40,12 @@
     <string name="textneuesrezept2">neues Rezept!</string>
     <string name="rezeptname">Rezeptname</string>
     <string name="beschreibung">Beschreibung</string>
+    <string name="fuegeeinezutathinzu">Füge eine Zutat hinzu</string>
+    <string name="zutat">Zutat</string>
+    <string name="zutathinzufuegen">Zutat hinzufügen</string>
+    <string name="gibdeinemrezepteinennamen">Benenne dein Rezept</string>
+    <string name="weiter">Weiter</string>
+    <string name="berabeiterezept1">Bearbeite dein</string>
+    <string name="rezept">Rezept</string>
+    <string name="rezepthinzufuegen">Rezept hinzufügen</string>
 </resources>

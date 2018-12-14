@@ -35,4 +35,9 @@
     <string name="artikelhinzufuegenbutton">Artikel hinzufügen</string>
     <string name="menge">Menge</string>
     <string name="kaufhaeufigkeit">Kaufhäufigkeit (optional)</string>
+    <string name="neuesrezept">Neues Rezept hinzufügen</string>
+    <string name="textneuesrezept">Erstelle ein</string>
+    <string name="textneuesrezept2">neues Rezept!</string>
+    <string name="rezeptname">Rezeptname</string>
+    <string name="beschreibung">Beschreibung</string>
 </resources>

@@ -24,7 +24,7 @@ public class KontoErstellenActivity extends AppCompatActivity {
     EditText et_benutzername, et_name, et_email, et_passwort;
     Button btn_kontoeroeffnen;
     RequestQueue requestQueue;
-    String insertUrl = "http://10.0.2.2:8080/quercus-4.0.39/erstellenutzerkonto.php";
+    String insertUrl = "http://10.0.2.2:3306/htdocs/erstellenutzerkonto.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

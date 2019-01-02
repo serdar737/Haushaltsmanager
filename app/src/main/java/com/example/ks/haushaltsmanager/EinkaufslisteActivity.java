@@ -16,12 +16,13 @@ import java.util.Objects;
 
 public class EinkaufslisteActivity extends AppCompatActivity {
 
-    TextView tv_benutzername, tv_haushaltsname;
+    TextView tv_haushaltsname;
     FloatingActionButton fab_artikelhinzufuegen;
     LinearLayout linearlayoutartikel;
     Button btn_weiter;
     EditText et_artikelname, et_menge, et_kaufhaeufigkeit;
     String artikelname, menge;
+    CheckBox checkbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,6 @@ public class EinkaufslisteActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_einkaufsliste);
 
-        tv_benutzername = findViewById(R.id.tv_benutzernameeinkauf);
         tv_haushaltsname = findViewById(R.id.tv_haushalteinkauf);
         fab_artikelhinzufuegen = findViewById(R.id.fab_artikelhinzufuegen);
         linearlayoutartikel = findViewById(R.id.linearlayoutartikel);
@@ -67,8 +67,9 @@ public class EinkaufslisteActivity extends AppCompatActivity {
     }
 
     public void artikelCheckBoxNeu() {
-        CheckBox checkbox = new CheckBox(getApplicationContext());
+        checkbox = new CheckBox(getApplicationContext());
         checkbox.setText(artikelname);
         linearlayoutartikel.addView(checkbox);
     }
+
 }

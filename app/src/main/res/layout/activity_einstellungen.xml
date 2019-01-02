@@ -6,4 +6,57 @@
     android:layout_height="match_parent"
     tools:context=".EinstellungenActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="395dp"
+        android:layout_height="386dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/btn_haushaltwechseln"
+            android:layout_width="match_parent"
+            android:layout_height="127dp"
+            android:text="@string/haushaltwechseln"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_hilfeaufrufen"
+            android:layout_width="match_parent"
+            android:layout_height="127dp"
+            android:text="@string/hilfe"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_ausloggen"
+            android:layout_width="match_parent"
+            android:layout_height="127dp"
+            android:text="@string/ausloggen"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_einstellungen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="176dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="176dp"
+        android:layout_marginBottom="47dp"
+        android:text="@string/einstellungen"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

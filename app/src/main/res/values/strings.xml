@@ -48,4 +48,6 @@
     <string name="berabeiterezept1">Bearbeite dein</string>
     <string name="rezept">Rezept</string>
     <string name="rezepthinzufuegen">Rezept hinzufügen</string>
+    <string name="haushaltwechseln">Haushalt wechseln</string>
+    <string name="ausloggen">Ausloggen</string>
 </resources>

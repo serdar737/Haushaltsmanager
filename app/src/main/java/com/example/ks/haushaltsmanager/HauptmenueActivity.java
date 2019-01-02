@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class HauptmenueActivity extends AppCompatActivity {
 
-    TextView tv_benutzername, tv_haushaltsname;
+    TextView tv_haushaltsname;
     Button btn_einkaufsliste, btn_rezeptuebersicht, btn_einstellungen;
 
     @Override
@@ -20,8 +20,7 @@ public class HauptmenueActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_hauptmenue);
 
-        tv_benutzername = findViewById(R.id.tv_benutzernamehauptmenue);
-        tv_haushaltsname = findViewById(R.id.tv_aktuellerhaushalthauptmenue);
+        tv_haushaltsname = findViewById(R.id.tv_haushalthauptmenue);
         btn_einkaufsliste = findViewById(R.id.btn_einkaufsliste);
         btn_rezeptuebersicht = findViewById(R.id.btn_rezepte);
         btn_einstellungen = findViewById(R.id.btn_einstellungen);

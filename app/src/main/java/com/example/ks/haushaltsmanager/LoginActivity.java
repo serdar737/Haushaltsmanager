@@ -41,8 +41,10 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor spe = idspeicher.edit();
                 spe.putInt("ID", (int)nutzerid);
-                spe.putInt("HaushaltsID", (int)haushaltsid);
                 spe.commit();
+
+                //TODO: NutzerID soll ueberprueft werden ob dazu mehrere haushalte vorliegen, wenn ja soll die Haushaltsauswahl geoeffnet werden
+                //wenn nein, soll die HaushaltsID geholt werden und direkt ins Hauptmenue uebergegangen werden
 
                 Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
                 //intent.putExtra("BENUTZERNAME_UEBERGABE", nutzerid);

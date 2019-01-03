@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.content.SharedPreferences;
+import android.content.Context;
 
 import java.util.Objects;
 
@@ -15,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText et_benutzername, et_passwortlogin;
     Button btn_login, btn_neueskonto;
     String benutzername, passwort;
+    int nutzerid, haushaltsid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,16 @@ public class LoginActivity extends AppCompatActivity {
                 benutzername = et_benutzername.getText().toString();
                 passwort = et_passwortlogin.getText().toString();
 
+                nutzerid = 13;
+
+                SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor spe = idspeicher.edit();
+                spe.putInt("ID", (int)nutzerid);
+                spe.putInt("HaushaltsID", (int)haushaltsid);
+                spe.commit();
+
                 Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
+                //intent.putExtra("BENUTZERNAME_UEBERGABE", nutzerid);
                 startActivity(intent);
             }
         });

@@ -1,6 +1,7 @@
 package com.example.ks.haushaltsmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ public class HauptmenueActivity extends AppCompatActivity {
 
     TextView tv_haushaltsname;
     Button btn_einkaufsliste, btn_rezeptuebersicht, btn_einstellungen;
+    int nutzerid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +22,15 @@ public class HauptmenueActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_hauptmenue);
 
+        SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
+        nutzerid = prefs.getInt("ID", -1);
+
         tv_haushaltsname = findViewById(R.id.tv_haushalthauptmenue);
         btn_einkaufsliste = findViewById(R.id.btn_einkaufsliste);
         btn_rezeptuebersicht = findViewById(R.id.btn_rezepte);
         btn_einstellungen = findViewById(R.id.btn_einstellungen);
+
+        tv_haushaltsname.setText("ID"+ nutzerid);
 
         btn_einkaufsliste.setOnClickListener(new View.OnClickListener() {
             @Override

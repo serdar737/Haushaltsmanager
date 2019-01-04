@@ -10,6 +10,15 @@ import android.widget.TextView;
 import android.content.SharedPreferences;
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
@@ -18,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_login, btn_neueskonto;
     String benutzername, passwort;
     int nutzerid, haushaltsid;
+    RequestQueue requestQueue;
+    String insertUrl = "http://10.0.2.2:3306/htdocs/loginabfrage.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +48,32 @@ public class LoginActivity extends AppCompatActivity {
                 passwort = et_passwortlogin.getText().toString();
 
                 nutzerid = 13;
+
+                StringRequest loginrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                })
+                {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map <String, String> parameters = new HashMap<String, String>();
+                        parameters.put("benutzername", benutzername);
+                        parameters.put("passwort", passwort);
+
+                        return parameters;
+                    }
+                };
+
+                //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+                //TODO: freischalten wenn Datenbankverbindung hergestellt werden soll
+                //requestQueue.add(loginrequest);
 
                 SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor spe = idspeicher.edit();

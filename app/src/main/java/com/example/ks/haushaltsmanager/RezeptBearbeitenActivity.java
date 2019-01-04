@@ -31,8 +31,9 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
     String rezeptname;
     Button btn_rezepthinzufuegen, btn_zutathinzufuegen;
     LinearLayout linearleayoutrezepterstellen;
-    String zutat01, zutat02, zutat03, zutat04;
+    String zutat01, zutat02, zutat03, zutat04, zutat05, zutat06, zutat07, zutat08, zutat09, zutat10, zutat11, zutat12, zutat13, zutat14, zutat15, zutat16, zutat17, zutat18, zutat19, zutat20;
     FloatingActionButton fab_zutathinzufuegen;
+    int haushaltsid;
 
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/htdocs/erstellerezept.php";
@@ -42,6 +43,12 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_rezept_bearbeiten);
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            rezeptname = extras.getString("REZEPTNAME");
+        }
 
         btn_rezepthinzufuegen = findViewById(R.id.btn_rezepterstellen);
         linearleayoutrezepterstellen = findViewById(R.id.linearlayoutrezepterstellen);
@@ -98,6 +105,28 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> parameters = new HashMap<String, String>();
                         //parameters.put("haushaltsid", haushaltsid);
+                        //parameters.put("rezeptname", rezeptname);
+                        //parameters.put("beschreibung", beschreibung);
+                        //parameters.put("zutat01", zutat01);
+                        //parameters.put("zutat02", zutat02);
+                        //parameters.put("zutat03", zutat03);
+                        //parameters.put("zutat04", zutat04);
+                        //parameters.put("zutat05", zutat05);
+                        //parameters.put("zutat06", zutat06);
+                        //parameters.put("zutat07", zutat07);
+                        //parameters.put("zutat08", zutat08);
+                        //parameters.put("zutat09", zutat09);
+                        //parameters.put("zutat10", zutat10);
+                        //parameters.put("zutat11", zutat11);
+                        //parameters.put("zutat12", zutat12);
+                        //parameters.put("zutat13", zutat13);
+                        //parameters.put("zutat14", zutat14);
+                        //parameters.put("zutat15", zutat15);
+                        //parameters.put("zutat16", zutat16);
+                        //parameters.put("zutat17", zutat17);
+                        //parameters.put("zutat18", zutat18);
+                        //parameters.put("zutat19", zutat19);
+                        //parameters.put("zutat20", zutat20);
 
 
                         return parameters;
@@ -108,7 +137,6 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                 requestQueue.add(srequest);
 
                 Intent intent = new Intent(RezeptBearbeitenActivity.this, RezeptUebersichtActivity.class);
-                //intent.putExtra("BENUTZERNAME_UEBERGABE", benutzername);
                 startActivity(intent);
 
             }

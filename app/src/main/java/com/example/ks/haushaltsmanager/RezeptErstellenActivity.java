@@ -17,6 +17,7 @@ public class RezeptErstellenActivity extends AppCompatActivity {
 
     EditText et_rezeptname;
     Button btn_weiter;
+    String rezeptname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,10 @@ public class RezeptErstellenActivity extends AppCompatActivity {
         btn_weiter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                rezeptname = et_rezeptname.getText().toString();
                 Intent intent = new Intent(RezeptErstellenActivity.this, RezeptBearbeitenActivity.class);
+                intent.putExtra("REZEPTNAME", rezeptname);
                 startActivity(intent);
             }
         });

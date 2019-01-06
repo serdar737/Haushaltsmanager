@@ -16,6 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
         et_passwortlogin = findViewById(R.id.et_passwortlogin);
         btn_login = findViewById(R.id.btn_login);
         btn_neueskonto = findViewById(R.id.btn_neueskonto);
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor spe = idspeicher.edit();
                 spe.putInt("ID", (int)nutzerid);
+                spe.putInt("HaushaltsID", (int)haushaltsid);
                 spe.commit();
 
                 //TODO: NutzerID soll ueberprueft werden ob dazu mehrere haushalte vorliegen, wenn ja soll die Haushaltsauswahl geoeffnet werden

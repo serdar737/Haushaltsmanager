@@ -114,27 +114,26 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                         //parameters.put("haushaltsid", haushaltsid);
                         parameters.put("rezeptname", rezeptname);
                         parameters.put("beschreibung", beschreibung);
-                        //parameters.put("zutat01", zutat01);
-                        //parameters.put("zutat02", zutat02);
-                        //parameters.put("zutat03", zutat03);
-                        //parameters.put("zutat04", zutat04);
-                        //parameters.put("zutat05", zutat05);
-                        //parameters.put("zutat06", zutat06);
-                        //parameters.put("zutat07", zutat07);
-                        //parameters.put("zutat08", zutat08);
-                        //parameters.put("zutat09", zutat09);
-                        //parameters.put("zutat10", zutat10);
-                        //parameters.put("zutat11", zutat11);
-                        //parameters.put("zutat12", zutat12);
-                        //parameters.put("zutat13", zutat13);
-                        //parameters.put("zutat14", zutat14);
-                        //parameters.put("zutat15", zutat15);
-                        //parameters.put("zutat16", zutat16);
-                        //parameters.put("zutat17", zutat17);
-                        //parameters.put("zutat18", zutat18);
-                        //parameters.put("zutat19", zutat19);
-                        //parameters.put("zutat20", zutat20);
-
+                        parameters.put("zutat01", zutat01);
+                        parameters.put("zutat02", zutat02);
+                        parameters.put("zutat03", zutat03);
+                        parameters.put("zutat04", zutat04);
+                        parameters.put("zutat05", zutat05);
+                        parameters.put("zutat06", zutat06);
+                        parameters.put("zutat07", zutat07);
+                        parameters.put("zutat08", zutat08);
+                        parameters.put("zutat09", zutat09);
+                        parameters.put("zutat10", zutat10);
+                        parameters.put("zutat11", zutat11);
+                        parameters.put("zutat12", zutat12);
+                        parameters.put("zutat13", zutat13);
+                        parameters.put("zutat14", zutat14);
+                        parameters.put("zutat15", zutat15);
+                        parameters.put("zutat16", zutat16);
+                        parameters.put("zutat17", zutat17);
+                        parameters.put("zutat18", zutat18);
+                        parameters.put("zutat19", zutat19);
+                        parameters.put("zutat20", zutat20);
 
                         return parameters;
                     }

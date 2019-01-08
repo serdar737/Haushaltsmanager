@@ -14,7 +14,7 @@ public class HauptmenueActivity extends AppCompatActivity {
 
     TextView tv_haushaltsname;
     Button btn_einkaufsliste, btn_rezeptuebersicht, btn_einstellungen;
-    int nutzerid;
+    int nutzerid, haushaltsid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class HauptmenueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hauptmenue);
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
-        nutzerid = prefs.getInt("ID", -1);
+        haushaltsid = prefs.getInt("HaushaltsID", -1);
 
         tv_haushaltsname = findViewById(R.id.tv_haushalthauptmenue);
         btn_einkaufsliste = findViewById(R.id.btn_einkaufsliste);

@@ -24,7 +24,7 @@ public class KontoErstellenActivity extends AppCompatActivity {
     EditText et_benutzername, et_name, et_email, et_passwort;
     Button btn_kontoeroeffnen;
     RequestQueue requestQueue;
-    String insertUrl = "http://10.0.2.2:3306/htdocs/erstellenutzerkonto.php";
+    String insertUrl = "http://10.0.2.2:3306/erstellenutzerkonto.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +74,9 @@ public class KontoErstellenActivity extends AppCompatActivity {
 
                 //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
                 requestQueue.add(srequest);
+                System.out.println("Benutzername"+ benutzername);
 
                 Intent intent = new Intent(KontoErstellenActivity.this, HaushaltBeitretenActivity.class);
-                //intent.putExtra("BENUTZERNAME_UEBERGABE", benutzername);
                 startActivity(intent);
 
             }

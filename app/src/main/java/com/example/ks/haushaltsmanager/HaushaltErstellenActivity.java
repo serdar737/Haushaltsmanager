@@ -25,7 +25,7 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
     Button btn_haushalterstellen, btn_haushaltbeitreten;
 
     RequestQueue requestQueue;
-    String insertUrl = "http://10.0.2.2:3306/htdocs/erstellehaushalt.php";
+    String insertUrl = "http://10.0.2.2:3306/erstellehaushalt.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

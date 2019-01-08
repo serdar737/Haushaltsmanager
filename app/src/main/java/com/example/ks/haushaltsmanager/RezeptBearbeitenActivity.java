@@ -2,6 +2,7 @@ package com.example.ks.haushaltsmanager;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -29,15 +30,15 @@ import java.util.Objects;
 public class RezeptBearbeitenActivity extends AppCompatActivity {
 
     EditText et_zutat, et_beschreibung;
-    String rezeptname;
+    String rezeptnametemp;
     Button btn_rezepthinzufuegen, btn_zutathinzufuegen;
     LinearLayout linearleayoutrezepterstellen;
     String zutat01 = "-1", zutat02 = "-1", zutat03 = "-1", zutat04 = "-1", zutat05 = "-1", zutat06 = "-1", zutat07 = "-1", zutat08 = "-1", zutat09 = "-1", zutat10 = "-1", zutat11 = "-1", zutat12 = "-1", zutat13 = "-1", zutat14 = "-1", zutat15 = "-1", zutat16 = "-1", zutat17 = "-1", zutat18 = "-1", zutat19 = "-1", zutat20 = "-1";
     FloatingActionButton fab_zutathinzufuegen;
-    int haushaltsid;
+    int haushaltsid, nutzerid;
 
     RequestQueue requestQueue;
-    String insertUrl = "http://10.0.2.2:3306/htdocs/erstellerezept.php";
+    String insertUrl = "http://10.0.2.2:3306/erstellerezept.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +46,15 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_rezept_bearbeiten);
 
+        SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
+        nutzerid = prefs.getInt("ID", -1);
+        haushaltsid = prefs.getInt("HaushaltsID", -1);
+
+
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            rezeptname = extras.getString("REZEPTNAME");
+            rezeptnametemp = extras.getString("REZEPTNAME");
         }
 
         btn_rezepthinzufuegen = findViewById(R.id.btn_rezepterstellen);
@@ -89,6 +95,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 final String beschreibung = et_beschreibung.getText().toString();
+                final String rezeptname = rezeptnametemp;
 
                 StringRequest srequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
                     @Override
@@ -105,8 +112,8 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> parameters = new HashMap<String, String>();
                         //parameters.put("haushaltsid", haushaltsid);
-                        //parameters.put("rezeptname", rezeptname);
-                        //parameters.put("beschreibung", beschreibung);
+                        parameters.put("rezeptname", rezeptname);
+                        parameters.put("beschreibung", beschreibung);
                         //parameters.put("zutat01", zutat01);
                         //parameters.put("zutat02", zutat02);
                         //parameters.put("zutat03", zutat03);

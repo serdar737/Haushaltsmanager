@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
                 passwort = et_passwortlogin.getText().toString();
 
                 nutzerid = 13;
+                haushaltsid = 2;
 
                 StringRequest loginrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
                     @Override

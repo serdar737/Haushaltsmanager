@@ -17,6 +17,7 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
     TextView tv_haushaltsname;
     LinearLayout llhaushaltsbestand;
     String artikelname;
+    String url = "http://10.0.2.2:3306/artikelhaushalthinzufuegen.php";
 
 
     @Override

@@ -1,14 +1,17 @@
 package com.example.ks.haushaltsmanager;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.content.SharedPreferences;
 import android.content.Context;
+
+import android.support.v7.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import android.view.View;
+
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -26,10 +29,11 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText et_benutzername, et_passwortlogin;
     Button btn_login, btn_neueskonto;
-    String benutzername, passwort;
     int nutzerid, haushaltsid;
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/htdocs/loginabfrage.php";
+    String haushaltsname;
+    String benutzername, passwort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +87,13 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences.Editor spe = idspeicher.edit();
                 spe.putInt("ID", (int)nutzerid);
                 spe.putInt("HaushaltsID", (int)haushaltsid);
+                spe.putString("Haushaltsname", haushaltsname);
                 spe.commit();
 
                 //TODO: NutzerID soll ueberprueft werden ob dazu mehrere haushalte vorliegen, wenn ja soll die Haushaltsauswahl geoeffnet werden
                 //wenn nein, soll die HaushaltsID geholt werden und direkt ins Hauptmenue uebergegangen werden
 
                 Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
-                //intent.putExtra("BENUTZERNAME_UEBERGABE", nutzerid);
                 startActivity(intent);
             }
         });

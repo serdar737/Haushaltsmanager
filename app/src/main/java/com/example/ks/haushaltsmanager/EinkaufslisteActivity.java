@@ -35,8 +35,9 @@ public class EinkaufslisteActivity extends AppCompatActivity {
     String artikelname;
     CheckBox checkbox;
     int haushaltsid, menge;
-    RequestQueue requestQueue;
+    RequestQueue requestQueue, requestQueue2;
     String insertUrl = "http://10.0.2.2:3306/artikelzueinkaufsliste.php";
+    String readUrl = "http://10.0.2.2:3306/zeigeeinkaufsliste.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class EinkaufslisteActivity extends AppCompatActivity {
         tv_haushaltsname = findViewById(R.id.tv_haushalteinkauf);
         fab_artikelhinzufuegen = findViewById(R.id.fab_artikelhinzufuegen);
         linearlayoutartikel = findViewById(R.id.linearlayoutartikel);
+
+        leseEinkaufsliste();
 
 
         fab_artikelhinzufuegen.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +117,27 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
         //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
         requestQueue.add(request);
+    }
+
+    public void leseEinkaufsliste() {
+
+        requestQueue2 = Volley.newRequestQueue(getApplicationContext());
+
+        StringRequest request = new StringRequest(Request.Method.POST, readUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        })
+        ;
+
+        //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+        requestQueue2.add(request);
     }
 
 }

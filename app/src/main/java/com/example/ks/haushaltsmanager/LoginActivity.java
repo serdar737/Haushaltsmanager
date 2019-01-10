@@ -12,6 +12,7 @@ import android.view.View;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -20,6 +21,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_login, btn_neueskonto;
     int nutzerid, haushaltsid;
     RequestQueue requestQueue;
-    String insertUrl = "http://10.0.2.2:3306/htdocs/loginabfrage.php";
-    String haushaltsname;
+    String insertUrl = "http://10.0.2.2:3306/login.php";
     String benutzername, passwort;
 
     @Override
@@ -54,12 +57,42 @@ public class LoginActivity extends AppCompatActivity {
                 benutzername = et_benutzername.getText().toString();
                 passwort = et_passwortlogin.getText().toString();
 
-                nutzerid = 13;
-                haushaltsid = 2;
-
                 StringRequest loginrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+
+                            if (obj.names().get(0).equals("success")) {
+
+                                String i = obj.getString("success");
+
+                                if (i.equals("true")) {
+
+                                    SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor spe = idspeicher.edit();
+                                    //spe.putInt("ID", obj.getInt("nutzerid"));
+                                    //spe.putInt("HaushaltsID", obj.getInt("haushaltsid"));
+                                    //spe.putString("Haushaltsname", obj.getString("haushaltsname"));
+                                    spe.commit();
+
+                                    Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Benutzername oder Passwort falsch", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+
+                            }
+                            else {
+                                Toast toast = Toast.makeText(getApplicationContext(), "Benutzername oder Passwort falsch", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 }, new Response.ErrorListener() {
@@ -79,22 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 };
 
-                //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
-                //TODO: freischalten wenn Datenbankverbindung hergestellt werden soll
-                //requestQueue.add(loginrequest);
-
-                SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor spe = idspeicher.edit();
-                spe.putInt("ID", (int)nutzerid);
-                spe.putInt("HaushaltsID", (int)haushaltsid);
-                spe.putString("Haushaltsname", haushaltsname);
-                spe.commit();
-
-                //TODO: NutzerID soll ueberprueft werden ob dazu mehrere haushalte vorliegen, wenn ja soll die Haushaltsauswahl geoeffnet werden
-                //wenn nein, soll die HaushaltsID geholt werden und direkt ins Hauptmenue uebergegangen werden
-
-                Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
-                startActivity(intent);
+                requestQueue.add(loginrequest);
             }
         });
 

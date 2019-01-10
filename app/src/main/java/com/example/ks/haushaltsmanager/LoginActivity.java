@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText et_benutzername, et_passwortlogin;
     Button btn_login, btn_neueskonto;
-    int nutzerid, haushaltsid;
+    int haushaltsid;
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/login.php";
     String benutzername, passwort;

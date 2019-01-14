@@ -57,6 +57,13 @@ public class LoginActivity extends AppCompatActivity {
                 benutzername = et_benutzername.getText().toString();
                 passwort = et_passwortlogin.getText().toString();
 
+                SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor spe = idspeicher.edit();
+                spe.putInt("ID", 10);
+                spe.putInt("HaushaltsID", 1);
+                //spe.putString("Haushaltsname", obj.getString("haushaltsname"));
+                spe.commit();
+
                 Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
                 startActivity(intent);
 
@@ -73,12 +80,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                 if (i.equals("true")) {
 
-                                    SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor spe = idspeicher.edit();
-                                    //spe.putInt("ID", obj.getInt("nutzerid"));
-                                    //spe.putInt("HaushaltsID", obj.getInt("haushaltsid"));
+                                    //SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                    //SharedPreferences.Editor spe = idspeicher.edit();
+                                    //spe.putInt("ID", 10);
+                                    //spe.putInt("HaushaltsID", 1);
                                     //spe.putString("Haushaltsname", obj.getString("haushaltsname"));
-                                    spe.commit();
+                                    //spe.commit();
 
 
                                 }
@@ -110,7 +117,6 @@ public class LoginActivity extends AppCompatActivity {
                         Map <String, String> parameters = new HashMap<String, String>();
                         parameters.put("benutzername", benutzername);
                         parameters.put("passwort", passwort);
-                        System.out.println("Werte in HashMap");
 
                         return parameters;
                     }

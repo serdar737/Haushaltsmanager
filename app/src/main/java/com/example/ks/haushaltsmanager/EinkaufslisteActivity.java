@@ -108,9 +108,9 @@ public class EinkaufslisteActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map <String, String> parameters = new HashMap<String, String>();
-                //parameters.put("haushaltsid", haushaltsid);
+                parameters.put("haushaltsid", ""+haushaltsid);
                 parameters.put("artikelname", artikelname);
-                //parameters.put("menge", menge);
+                parameters.put("menge", ""+menge);
                 return parameters;
             }
         };

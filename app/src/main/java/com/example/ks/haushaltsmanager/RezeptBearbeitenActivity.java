@@ -111,7 +111,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> parameters = new HashMap<String, String>();
-                        //parameters.put("haushaltsid", haushaltsid);
+                        parameters.put("haushaltsid", ""+haushaltsid);
                         parameters.put("rezeptname", rezeptname);
                         parameters.put("beschreibung", beschreibung);
                         parameters.put("zutat01", zutat01);

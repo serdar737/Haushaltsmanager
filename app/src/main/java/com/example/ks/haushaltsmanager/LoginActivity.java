@@ -57,14 +57,18 @@ public class LoginActivity extends AppCompatActivity {
                 benutzername = et_benutzername.getText().toString();
                 passwort = et_passwortlogin.getText().toString();
 
+                Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
+                startActivity(intent);
+
                 StringRequest loginrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            System.out.println("Im onResponse");
                             JSONObject obj = new JSONObject(response);
 
                             if (obj.names().get(0).equals("success")) {
-
+                                System.out.println("Erste If Bedingung");
                                 String i = obj.getString("success");
 
                                 if (i.equals("true")) {
@@ -76,8 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                     //spe.putString("Haushaltsname", obj.getString("haushaltsname"));
                                     spe.commit();
 
-                                    Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
-                                    startActivity(intent);
+
                                 }
                                 else {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Benutzername oder Passwort falsch", Toast.LENGTH_SHORT);
@@ -107,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                         Map <String, String> parameters = new HashMap<String, String>();
                         parameters.put("benutzername", benutzername);
                         parameters.put("passwort", passwort);
+                        System.out.println("Werte in HashMap");
 
                         return parameters;
                     }

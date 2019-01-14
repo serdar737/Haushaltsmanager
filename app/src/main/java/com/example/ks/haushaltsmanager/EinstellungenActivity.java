@@ -13,8 +13,7 @@ import java.util.Objects;
 public class EinstellungenActivity extends AppCompatActivity {
 
     Button btn_haushaltwechseln, btn_hilfe, btn_ausloggen;
-    String haushaltsname;
-    int haushaltsid, nutzerid;
+    int haushaltsid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,15 +47,11 @@ public class EinstellungenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                nutzerid = -1;
-                haushaltsid = -1;
-                haushaltsname = "Unbekannter Haushalt";
-
                 SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor spe = prefs.edit();
-                spe.putInt("ID", (int)nutzerid);
-                spe.putInt("HaushaltsID", (int)haushaltsid);
-                spe.putString("Haushaltsname", haushaltsname);
+                spe.putInt("ID", -1);
+                spe.putInt("HaushaltsID", -1);
+                spe.putString("Haushaltsname", "Unbekannter Haushalt");
                 spe.apply();
 
                 Intent intent = new Intent(EinstellungenActivity.this, LoginActivity.class);

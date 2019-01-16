@@ -57,42 +57,24 @@ public class LoginActivity extends AppCompatActivity {
                 benutzername = et_benutzername.getText().toString();
                 passwort = et_passwortlogin.getText().toString();
 
-                SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                SharedPreferences.Editor spe = idspeicher.edit();
-                spe.putInt("ID", 10);
-                spe.putInt("HaushaltsID", 1);
-                //spe.putString("Haushaltsname", obj.getString("haushaltsname"));
-                spe.commit();
-
-                Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
-                startActivity(intent);
-
                 StringRequest loginrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            System.out.println("Im onResponse");
+
                             JSONObject obj = new JSONObject(response);
 
                             if (obj.names().get(0).equals("success")) {
-                                System.out.println("Erste If Bedingung");
-                                String i = obj.getString("success");
 
-                                if (i.equals("true")) {
+                                SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor spe = idspeicher.edit();
+                                spe.putInt("ID", 10);
+                                spe.putInt("HaushaltsID", 30);
+                                spe.putString("Haushaltsname", "Haushalt Test");
+                                spe.commit();
 
-                                    //SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                                    //SharedPreferences.Editor spe = idspeicher.edit();
-                                    //spe.putInt("ID", 10);
-                                    //spe.putInt("HaushaltsID", 1);
-                                    //spe.putString("Haushaltsname", obj.getString("haushaltsname"));
-                                    //spe.commit();
-
-
-                                }
-                                else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Benutzername oder Passwort falsch", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
+                                Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
+                                startActivity(intent);
 
                             }
                             else {

@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor spe = idspeicher.edit();
                                 spe.putInt("ID", 10);
-                                spe.putInt("HaushaltsID", 30);
+                                spe.putInt("HaushaltsID", 2);
                                 spe.putString("Haushaltsname", "Haushalt Test");
                                 spe.commit();
 

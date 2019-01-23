@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -73,10 +74,19 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        artikelname = et_artikelname.getText().toString();
-                        menge = Integer.parseInt(et_menge.getText().toString());
-                        artikelCheckBoxNeu();
-                        dialog.hide();
+                        //If-Schleife da DB eine Eingabe der Menge fordert
+                        String tempmenge = et_menge.getText().toString();
+
+                        if (tempmenge.equals("")) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Bitte Menge angeben", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        else {
+                            artikelname = et_artikelname.getText().toString();
+                            menge = Integer.parseInt(tempmenge);
+                            artikelCheckBoxNeu();
+                            dialog.hide();
+                        }
                     }
                 });
 

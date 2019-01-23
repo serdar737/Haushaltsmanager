@@ -1,6 +1,8 @@
 package com.example.ks.haushaltsmanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,13 +10,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -31,10 +36,10 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
     LinearLayout linearlayoutrezepteuebersicht;
     FloatingActionButton fab_neuesrezept;
     Button btn_rezeptname;
-    int haushaltsid = 1;
+    int haushaltsid;
 
     RequestQueue requestQueue;
-    String insertUrl = "http://10.0.2.2:3306/htdocs/zeigerezepte.php";
+    String insertUrl = "http://10.0.2.2:3306/zeigerezepte.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,33 +47,35 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_rezept_uebersicht);
 
+        SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
+        haushaltsid = prefs.getInt("HaushaltsID", -1);
+
         linearlayoutrezepteuebersicht = findViewById(R.id.linearlayoutartikel);
         fab_neuesrezept = findViewById(R.id.fab_artikelhinzufuegen);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        Map<String, Integer> params = new HashMap();
-        params.put("haushaltsid", haushaltsid);
-
-        JSONObject parameters = new JSONObject(params);
-
-        JsonObjectRequest jsonrequest = new JsonObjectRequest(Request.Method.POST, insertUrl, parameters, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, insertUrl, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 try {
+
                     JSONArray rezepte = response.getJSONArray("rezepte");
-                    for (int i = 0; i < rezepte.length(); i++ ) {
-                        JSONObject rezept = rezepte.getJSONObject(i);
+
+                    for (int z = 0; z < rezepte.length(); z++) {
+                        JSONObject rezept = rezepte.getJSONObject(z);
 
                         String rezeptname = rezept.getString("Name");
-
+                        System.out.println(rezept.getString("Name"));
+                        btn_rezeptname = new Button(getApplicationContext());
                         btn_rezeptname.setText(rezeptname);
                         linearlayoutrezepteuebersicht.addView(btn_rezeptname);
-
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+                }
+                catch (JSONException e) {
+
                 }
 
             }
@@ -77,9 +84,18 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        });
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map <String, String> parameters = new HashMap<String, String>();
+                parameters.put("haushaltsid", ""+haushaltsid);
 
-        requestQueue.add(jsonrequest);
+                return parameters;
+            }
+        };
+
+        requestQueue.add(request);
 
         fab_neuesrezept.setOnClickListener(new View.OnClickListener() {
             @Override

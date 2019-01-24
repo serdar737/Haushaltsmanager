@@ -1,6 +1,5 @@
 package com.example.ks.haushaltsmanager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
@@ -8,17 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -67,8 +62,6 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
                     for (int z = 0; z < rezepte.length(); z++) {
                         JSONObject rezept = rezepte.getJSONObject(z);
 
-                        //String rezeptname = rezept.getString("Name");
-                        //System.out.println(rezept.getString("Name"));
                         btn_rezeptname = new Button(getApplicationContext());
                         btn_rezeptname.setText(rezept.getString("Name"));
                         linearlayoutrezepteuebersicht.addView(btn_rezeptname);

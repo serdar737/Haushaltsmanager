@@ -22,6 +22,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -133,9 +137,26 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
         requestQueue2 = Volley.newRequestQueue(getApplicationContext());
 
-        StringRequest request = new StringRequest(Request.Method.POST, readUrl, new Response.Listener<String>() {
+        StringRequest liste_request = new StringRequest(Request.Method.POST, readUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+
+                try {
+                    JSONObject jobj = new JSONObject(response.toString());
+                    JSONArray rezepte = jobj.getJSONArray("liste");
+
+                    for (int z = 0; z < rezepte.length(); z++) {
+                        JSONObject rezept = rezepte.getJSONObject(z);
+
+                        CheckBox checkbox_liste = new CheckBox(getApplicationContext());
+                        checkbox_liste.setText(rezept.getString("Artikelname"));
+                        linearlayoutartikel.addView(checkbox_liste);
+                    }
+
+                }
+                catch (JSONException e) {
+
+                }
 
             }
         }, new Response.ErrorListener() {
@@ -144,10 +165,17 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
             }
         })
-        ;
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map <String, String> parameters = new HashMap<String, String>();
+                parameters.put("haushaltsid", ""+haushaltsid);
 
-        //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
-        requestQueue2.add(request);
+                return parameters;
+            }
+        };
+
+        requestQueue2.add(liste_request);
     }
 
 }

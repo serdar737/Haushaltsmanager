@@ -50,26 +50,27 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         haushaltsid = prefs.getInt("HaushaltsID", -1);
 
-        linearlayoutrezepteuebersicht = findViewById(R.id.linearlayoutartikel);
+        linearlayoutrezepteuebersicht = findViewById(R.id.linearlayoutrezepte);
         fab_neuesrezept = findViewById(R.id.fab_artikelhinzufuegen);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, insertUrl, new Response.Listener<JSONObject>() {
+        StringRequest request = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
 
                 try {
-
-                    JSONArray rezepte = response.getJSONArray("rezepte");
+                    System.out.println("Im onResponse");
+                    JSONObject jobj = new JSONObject(response.toString());
+                    JSONArray rezepte = jobj.getJSONArray("rezepte");
 
                     for (int z = 0; z < rezepte.length(); z++) {
                         JSONObject rezept = rezepte.getJSONObject(z);
 
-                        String rezeptname = rezept.getString("Name");
-                        System.out.println(rezept.getString("Name"));
+                        //String rezeptname = rezept.getString("Name");
+                        //System.out.println(rezept.getString("Name"));
                         btn_rezeptname = new Button(getApplicationContext());
-                        btn_rezeptname.setText(rezeptname);
+                        btn_rezeptname.setText(rezept.getString("Name"));
                         linearlayoutrezepteuebersicht.addView(btn_rezeptname);
                     }
 

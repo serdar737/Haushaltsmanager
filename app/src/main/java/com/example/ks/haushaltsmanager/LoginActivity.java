@@ -52,102 +52,113 @@ public class LoginActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        btn_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                benutzername = et_benutzername.getText().toString();
-                passwort = et_passwortlogin.getText().toString();
+        SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
+        haushaltsid = prefs.getInt("HaushaltsID", -1);
 
-                StringRequest loginrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
+        if (haushaltsid == -1) {
+            btn_login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    benutzername = et_benutzername.getText().toString();
+                    passwort = et_passwortlogin.getText().toString();
 
-                            JSONObject obj = new JSONObject(response);
+                    StringRequest loginrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
 
-                            JSONArray login = obj.getJSONArray("einloggen");
+                                JSONObject obj = new JSONObject(response);
 
-                            JSONObject loginerlaubnis_json = login.getJSONObject(0);
+                                JSONArray login = obj.getJSONArray("einloggen");
 
-                            String loginerlaubnis = loginerlaubnis_json.getString("login");
+                                JSONObject loginerlaubnis_json = login.getJSONObject(0);
 
-                            if (loginerlaubnis.equals("true")) {
+                                String loginerlaubnis = loginerlaubnis_json.getString("login");
 
-                                JSONObject benutzerid_json = login.getJSONObject(1);
+                                if (loginerlaubnis.equals("true")) {
 
-                                benutzerid = benutzerid_json.getInt("ID");
+                                    JSONObject benutzerid_json = login.getJSONObject(1);
 
-                                JSONObject haushalte_json = login.getJSONObject(2);
+                                    benutzerid = benutzerid_json.getInt("ID");
 
-                                String haushalte = haushalte_json.getString("mehrhaushalte");
+                                    JSONObject haushalte_json = login.getJSONObject(2);
 
-                                if (haushalte.equals("false")) {
+                                    String haushalte = haushalte_json.getString("mehrhaushalte");
 
-                                    JSONObject haushaltsid_json = login.getJSONObject(3);
+                                    if (haushalte.equals("false")) {
 
-                                    haushaltsid = haushaltsid_json.getInt("HaushaltsID");
+                                        JSONObject haushaltsid_json = login.getJSONObject(3);
 
-                                    SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor spe = idspeicher.edit();
-                                    spe.putInt("ID", benutzerid);
-                                    spe.putInt("HaushaltsID", haushaltsid);
-                                    spe.putString("Haushaltsname", "Haushalt Test Test: "+haushaltsid);
-                                    spe.commit();
+                                        haushaltsid = haushaltsid_json.getInt("HaushaltsID");
 
-                                    System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);
+                                        SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor spe = idspeicher.edit();
+                                        spe.putInt("ID", benutzerid);
+                                        spe.putInt("HaushaltsID", haushaltsid);
+                                        spe.putString("Haushaltsname", "Haushalt Test Test: "+haushaltsid);
+                                        spe.commit();
 
-                                    Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
-                                    startActivity(intent);
+                                        System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);
+
+                                        Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
+                                        startActivity(intent);
+                                    }
+                                    else {
+
+                                        SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor spe = idspeicher.edit();
+                                        spe.putInt("ID", benutzerid);
+                                        spe.putInt("HaushaltsID", -1);
+                                        spe.putString("Haushaltsname", "Unbekannter Haushalt");
+                                        spe.commit();
+
+                                        System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);
+
+                                        Intent intent = new Intent(LoginActivity.this, NutzerhaushalteActivity.class);
+                                        startActivity(intent);
+
+                                    }
+
                                 }
                                 else {
-
-                                    SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor spe = idspeicher.edit();
-                                    spe.putInt("ID", benutzerid);
-                                    spe.putInt("HaushaltsID", -1);
-                                    spe.putString("Haushaltsname", "Unbekannter Haushalt");
-                                    spe.commit();
-
-                                    System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);
-
-                                    Intent intent = new Intent(LoginActivity.this, NutzerhaushalteActivity.class);
-                                    startActivity(intent);
-
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Benutzername oder Passwort falsch", Toast.LENGTH_SHORT);
+                                    toast.show();
                                 }
 
-                            }
-                            else {
-                                Toast toast = Toast.makeText(getApplicationContext(), "Benutzername oder Passwort falsch", Toast.LENGTH_SHORT);
-                                toast.show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                        }
+                    })
+                    {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map <String, String> parameters = new HashMap<String, String>();
+                            parameters.put("benutzername", benutzername);
+                            parameters.put("passwort", passwort);
 
-                    }
-                })
-                {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map <String, String> parameters = new HashMap<String, String>();
-                        parameters.put("benutzername", benutzername);
-                        parameters.put("passwort", passwort);
+                            return parameters;
+                        }
+                    };
 
-                        return parameters;
-                    }
-                };
-
-                requestQueue.add(loginrequest);
+                    requestQueue.add(loginrequest);
 
 
-            }
-        });
+                }
+            });
+        }
+        else {
+            Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
+            startActivity(intent);
+        }
+
+
 
         btn_neueskonto.setOnClickListener(new View.OnClickListener() {
             @Override

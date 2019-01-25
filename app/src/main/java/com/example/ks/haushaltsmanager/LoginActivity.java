@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText et_benutzername, et_passwortlogin;
     Button btn_login, btn_neueskonto;
-    int haushaltsid;
+    int haushaltsid, benutzerid;
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/login.php";
     String benutzername, passwort;
@@ -64,17 +65,55 @@ public class LoginActivity extends AppCompatActivity {
 
                             JSONObject obj = new JSONObject(response);
 
-                            if (obj.names().get(0).equals("success")) {
+                            JSONArray login = obj.getJSONArray("einloggen");
 
-                                SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor spe = idspeicher.edit();
-                                spe.putInt("ID", 10);
-                                spe.putInt("HaushaltsID", 2);
-                                spe.putString("Haushaltsname", "Haushalt Test");
-                                spe.commit();
+                            JSONObject loginerlaubnis_json = login.getJSONObject(0);
 
-                                Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
-                                startActivity(intent);
+                            String loginerlaubnis = loginerlaubnis_json.getString("login");
+
+                            if (loginerlaubnis.equals("true")) {
+
+                                JSONObject benutzerid_json = login.getJSONObject(1);
+
+                                benutzerid = benutzerid_json.getInt("ID");
+
+                                JSONObject haushalte_json = login.getJSONObject(2);
+
+                                String haushalte = haushalte_json.getString("mehrhaushalte");
+
+                                if (haushalte.equals("false")) {
+
+                                    JSONObject haushaltsid_json = login.getJSONObject(3);
+
+                                    haushaltsid = haushaltsid_json.getInt("HaushaltsID");
+
+                                    SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor spe = idspeicher.edit();
+                                    spe.putInt("ID", benutzerid);
+                                    spe.putInt("HaushaltsID", haushaltsid);
+                                    spe.putString("Haushaltsname", "Haushalt Test Test: "+haushaltsid);
+                                    spe.commit();
+
+                                    System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);
+
+                                    Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+
+                                    SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor spe = idspeicher.edit();
+                                    spe.putInt("ID", benutzerid);
+                                    spe.putInt("HaushaltsID", -1);
+                                    spe.putString("Haushaltsname", "Unbekannter Haushalt");
+                                    spe.commit();
+
+                                    System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);
+
+                                    Intent intent = new Intent(LoginActivity.this, NutzerhaushalteActivity.class);
+                                    startActivity(intent);
+
+                                }
 
                             }
                             else {
@@ -105,6 +144,8 @@ public class LoginActivity extends AppCompatActivity {
                 };
 
                 requestQueue.add(loginrequest);
+
+
             }
         });
 

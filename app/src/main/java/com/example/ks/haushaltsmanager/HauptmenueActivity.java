@@ -17,7 +17,7 @@ import java.util.Objects;
 public class HauptmenueActivity extends AppCompatActivity {
 
     TextView tv_haushaltsname;
-    Button btn_einkaufsliste, btn_rezeptuebersicht, btn_einstellungen;
+    Button btn_einkaufsliste, btn_rezeptuebersicht, btn_einstellungen, btn_haushaltsbestand;
     String haushaltsname;
 
     @Override
@@ -32,6 +32,7 @@ public class HauptmenueActivity extends AppCompatActivity {
         tv_haushaltsname = findViewById(R.id.tv_haushalthauptmenue);
         btn_einkaufsliste = findViewById(R.id.btn_einkaufsliste);
         btn_rezeptuebersicht = findViewById(R.id.btn_rezepte);
+        btn_haushaltsbestand = findViewById(R.id.btn_haushaltsbestand);
         btn_einstellungen = findViewById(R.id.btn_einstellungen);
 
         tv_haushaltsname.setText(haushaltsname);
@@ -46,6 +47,15 @@ public class HauptmenueActivity extends AppCompatActivity {
         });
 
         btn_rezeptuebersicht.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(HauptmenueActivity.this, RezeptUebersichtActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_haushaltsbestand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

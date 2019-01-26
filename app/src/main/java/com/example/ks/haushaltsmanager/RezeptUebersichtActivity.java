@@ -55,7 +55,7 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
             public void onResponse(String response) {
 
                 try {
-                    System.out.println("Im onResponse");
+
                     JSONObject jobj = new JSONObject(response.toString());
                     JSONArray rezepte = jobj.getJSONArray("rezepte");
 

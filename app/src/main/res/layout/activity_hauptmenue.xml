@@ -29,7 +29,7 @@
         <Button
             android:id="@+id/btn_einkaufsliste"
             android:layout_width="match_parent"
-            android:layout_height="127dp"
+            android:layout_height="100dp"
             android:text="@string/einkaufsliste"
             android:textAllCaps="false"
             android:textSize="24sp" />
@@ -37,15 +37,23 @@
         <Button
             android:id="@+id/btn_rezepte"
             android:layout_width="match_parent"
-            android:layout_height="127dp"
+            android:layout_height="100dp"
             android:text="@string/rezepte"
+            android:textAllCaps="false"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btn_haushaltsbestand"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/haushaltsbestand"
             android:textAllCaps="false"
             android:textSize="24sp" />
 
         <Button
             android:id="@+id/btn_einstellungen"
             android:layout_width="match_parent"
-            android:layout_height="127dp"
+            android:layout_height="100dp"
             android:text="@string/einstellungen"
             android:textAllCaps="false"
             android:textSize="24sp" />

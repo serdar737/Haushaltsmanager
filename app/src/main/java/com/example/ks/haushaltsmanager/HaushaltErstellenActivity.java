@@ -1,6 +1,7 @@
 package com.example.ks.haushaltsmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,12 +27,16 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
 
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/erstellehaushalt.php";
+    int benutzerid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_haushalt_erstellen);
+
+        SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
+        benutzerid = prefs.getInt("ID", -1);
 
         et_haushalterstellenname = findViewById(R.id.et_haushalterstellenname);
         et_haushalterstellenanschrift = findViewById(R.id.et_haushalterstellenanschrift);
@@ -70,6 +75,7 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
                         parameters.put("haushaltsname", haushaltname);
                         parameters.put("passwort", haushaltpasswort);
                         parameters.put("beschreibung", haushaltbeschreibung);
+                        parameters.put("nutzerid", ""+benutzerid);
 
                         return parameters;
                     }

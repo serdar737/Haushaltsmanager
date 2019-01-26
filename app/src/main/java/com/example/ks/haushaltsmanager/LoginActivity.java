@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                                         SharedPreferences.Editor spe = idspeicher.edit();
                                         spe.putInt("ID", benutzerid);
                                         spe.putInt("HaushaltsID", haushaltsid);
-                                        spe.putString("Haushaltsname", "Haushalt Test Test: "+haushaltsid);
+                                        spe.putString("Haushaltsname", "Haushalt: "+haushaltsid);
                                         spe.commit();
 
                                         System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);

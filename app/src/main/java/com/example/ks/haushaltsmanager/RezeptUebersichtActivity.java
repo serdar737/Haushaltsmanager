@@ -60,11 +60,24 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
                     JSONArray rezepte = jobj.getJSONArray("rezepte");
 
                     for (int z = 0; z < rezepte.length(); z++) {
-                        JSONObject rezept = rezepte.getJSONObject(z);
+                        final JSONObject rezept = rezepte.getJSONObject(z);
 
                         btn_rezeptname = new Button(getApplicationContext());
                         btn_rezeptname.setText(rezept.getString("Name"));
                         linearlayoutrezepteuebersicht.addView(btn_rezeptname);
+
+                        btn_rezeptname.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(RezeptUebersichtActivity.this, RezeptAnsichtActivity.class);
+                                try {
+                                    intent.putExtra("REZEPTNAME", rezept.getString("Name") );
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                startActivity(intent);
+                            }
+                        });
                     }
 
                 }
@@ -99,5 +112,6 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
     }
 }

@@ -59,7 +59,7 @@ public class HauptmenueActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(HauptmenueActivity.this, RezeptUebersichtActivity.class);
+                Intent intent = new Intent(HauptmenueActivity.this, HaushaltsbestandActivity.class);
                 startActivity(intent);
             }
         });

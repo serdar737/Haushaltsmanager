@@ -1,11 +1,14 @@
 package com.example.ks.haushaltsmanager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,6 +17,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.android.volley.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +31,7 @@ public class KontoErstellenActivity extends AppCompatActivity {
     Button btn_kontoeroeffnen;
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/erstellenutzerkonto.php";
+    int benutzerid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,40 +51,69 @@ public class KontoErstellenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+
+
                 final String benutzername = et_benutzername.getText().toString();
                 final String name = et_name.getText().toString();
-                String email = et_email.getText().toString();
+                final String email = et_email.getText().toString();
                 final String passwort = et_passwort.getText().toString();
 
-                StringRequest srequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                if (benutzername.equals("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Bitte fülle alle Felder aus!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else if (name.equals("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Bitte fülle alle Felder aus!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else if (passwort.equals("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Bitte fülle alle Felder aus!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                    StringRequest srequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
-                    }
-                })
-                {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map <String, String> parameters = new HashMap<String, String>();
-                        parameters.put("benutzername", benutzername);
-                        parameters.put("name", name);
-                        parameters.put("passwort", passwort);
+                            try {
+                                JSONObject obj = new JSONObject(response);
+                                benutzerid = Integer.parseInt(obj.getJSONObject("ID").toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
-                        return parameters;
-                    }
-                };
+                            SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor spe = prefs.edit();
+                            spe.putInt("BenutzerID", benutzerid);
+                            spe.apply();
 
-                //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
-                requestQueue.add(srequest);
+                            Intent intent = new Intent(KontoErstellenActivity.this, HaushaltBeitretenActivity.class);
+                            startActivity(intent);
 
-                Intent intent = new Intent(KontoErstellenActivity.this, HaushaltBeitretenActivity.class);
-                startActivity(intent);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
+                        }
+                    })
+                    {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map <String, String> parameters = new HashMap<String, String>();
+                            parameters.put("benutzername", benutzername);
+                            parameters.put("name", name);
+                            parameters.put("passwort", passwort);
+
+                            return parameters;
+                        }
+                    };
+
+                    //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+                    requestQueue.add(srequest);
+
+                }
             }
         });
     }

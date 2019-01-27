@@ -51,13 +51,15 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
 
                 try {
                     JSONObject obj = new JSONObject(response.toString());
+                    JSONArray haushaltids = obj.getJSONArray("ids");
                     JSONArray haushalte = obj.getJSONArray("haushalte");
 
                     for (int z = 0; z < haushalte.length(); z++) {
                         JSONObject haushalt = haushalte.getJSONObject(z);
+                        JSONObject ids = haushaltids.getJSONObject(z);
 
                         btn_haushalt = new Button(getApplicationContext());
-                        btn_haushalt.setText(haushalt.getString("Haushaltsname"));
+                        btn_haushalt.setText(ids.getString("ID")+" - "+haushalt.getString("Haushaltsname"));
                         llnutzerhaushalte.addView(btn_haushalt);
                     }
 

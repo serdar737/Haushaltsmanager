@@ -116,6 +116,9 @@ public class LoginActivity extends AppCompatActivity {
                                         spe.putString("Haushaltsname", "Unbekannter Haushalt");
                                         spe.commit();
 
+                                        Toast toast = Toast.makeText(getApplicationContext(), "Konto erfolgreich erstellt!", Toast.LENGTH_SHORT);
+                                        toast.show();
+
                                         Intent intent = new Intent(LoginActivity.this, NutzerhaushalteActivity.class);
                                         startActivity(intent);
 

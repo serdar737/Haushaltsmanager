@@ -85,6 +85,9 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
                             spe.putInt("HaushaltsID", haushaltsid);
                             spe.apply();
 
+                            Toast toast = Toast.makeText(getApplicationContext(), "Haushalt erfolgreich erstellt!", Toast.LENGTH_SHORT);
+                            toast.show();
+
                             Intent intent = new Intent(HaushaltErstellenActivity.this, HauptmenueActivity.class);
                             startActivity(intent);
 

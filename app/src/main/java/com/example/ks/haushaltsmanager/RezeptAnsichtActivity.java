@@ -2,9 +2,12 @@ package com.example.ks.haushaltsmanager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,12 +30,15 @@ import java.util.Objects;
 
 public class RezeptAnsichtActivity extends AppCompatActivity {
 
+    Animation fab_klein_oeffnen, fab_klein_schliessen;
+    boolean menueoffen = false;
     TextView tv_rezeptname, tv_zutat;
     LinearLayout ll_zutaten, ll_beschreibung;
     RequestQueue requestQueue;
     String url = "http://10.0.2.2:3306/rezeptansicht.php";
     String rezeptname;
     int haushaltsid, zahl;
+    FloatingActionButton fab_loeschen, fab_bearbeiten, fab_menue;
 
 
     @Override
@@ -53,6 +59,13 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         tv_rezeptname = findViewById(R.id.tv_rezeptname_ru);
         ll_beschreibung = findViewById(R.id.ll_rezeptzutaten);
         ll_zutaten = findViewById(R.id.ll_rezeptbeschreibung);
+        fab_bearbeiten = findViewById(R.id.fab_rezeptbearbeiten);
+        fab_loeschen = findViewById(R.id.fab_rezeptloeschen);
+        fab_menue = findViewById(R.id.fab_rezeptmenue);
+
+        //Die Animation Resource Files der Animationen fuer die FABs den Animationsvariabeln zuweisen
+        fab_klein_oeffnen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_klein_oeffnen);
+        fab_klein_schliessen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_klein_schliessen);
 
         tv_rezeptname.setText(rezeptname);
 
@@ -104,5 +117,56 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         requestQueue.add(request);
 
 
+        //OnClickListener fuer den Button welcher ein kleines Menue oeffnet, welches aus zwei weiteren FABs besteht
+        fab_menue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (menueoffen == false) {
+                    //Mit KLick auf den Menue Button oeffnet sich das kleine Menue daneben, bestehend aus dem Loschen und dem Bearbeiten Button
+                    animationstarten();
+                }
+                else {
+                    //Wenn die Buttons des Menues bereits geoeffnet sind und man klickt ein zweites Mal auf den Button, schließt das Menue sich
+                    animationbeenden();
+                }
+            }
+        });
+
+        //OnClickListener fuer einen Button mit welchem man das gewaehlte Rezept loeschen kann
+        fab_loeschen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        //OnCLickListener fuer einen Button, welcher einem in die Bearbeitungsansicht des Rezepts weiterleitet
+        fab_bearbeiten.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RezeptAnsichtActivity.this, RezeptBearbeitenActivity.class);
+                intent.putExtra("REZEPTNAME", rezeptname);
+                startActivity(intent);
+            }
+        });
+
+
+    }
+
+    public void animationstarten() {
+        fab_loeschen.startAnimation(fab_klein_oeffnen);
+        fab_bearbeiten.startAnimation(fab_klein_oeffnen);
+        fab_loeschen.setClickable(true);
+        fab_bearbeiten.setClickable(true);
+        menueoffen = true;
+    }
+
+    public void animationbeenden () {
+        fab_loeschen.startAnimation(fab_klein_schliessen);
+        fab_bearbeiten.startAnimation(fab_klein_schliessen);
+        fab_loeschen.setClickable(false);
+        fab_bearbeiten.setClickable(false);
+        menueoffen = false;
     }
 }

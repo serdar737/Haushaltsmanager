@@ -22,12 +22,10 @@
     <ScrollView
         android:id="@+id/sv_zutaten"
         android:layout_width="395dp"
-        android:layout_height="211dp"
+        android:layout_height="201dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="7dp"
-        app:layout_constraintBottom_toTopOf="@+id/sv_beschreibung"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_rezeptname_ru">
@@ -42,13 +40,12 @@
     <ScrollView
         android:id="@+id/sv_beschreibung"
         android:layout_width="395dp"
-        android:layout_height="310dp"
+        android:layout_height="233dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="11dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sv_zutaten">
 
@@ -58,5 +55,62 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_rezeptmenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="325dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="26dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sv_beschreibung"
+        app:srcCompat="@android:drawable/ic_menu_compass"
+        android:focusable="true" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_rezeptbearbeiten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="31dp"
+        android:clickable="false"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fab_rezeptmenue"
+        app:layout_constraintStart_toEndOf="@+id/fab_rezeptloeschen"
+        app:layout_constraintTop_toBottomOf="@+id/sv_beschreibung"
+        app:layout_constraintVertical_bias="0.0"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_rezeptloeschen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="207dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="31dp"
+        android:clickable="false"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fab_rezeptbearbeiten"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sv_beschreibung"
+        app:pressedTranslationZ="12dp"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 </android.support.constraint.ConstraintLayout>

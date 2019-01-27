@@ -34,10 +34,11 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
     boolean menueoffen = false;
     TextView tv_rezeptname, tv_zutat;
     LinearLayout ll_zutaten, ll_beschreibung;
-    RequestQueue requestQueue;
+    RequestQueue requestQueue, requestQueue2;
     String url = "http://10.0.2.2:3306/rezeptansicht.php";
+    String loeschenurl = "http://10.0.2.2:3306/loescherezept.php";
     String rezeptname;
-    int haushaltsid, zahl;
+    int haushaltsid, zahl, rezeptid;
     FloatingActionButton fab_loeschen, fab_bearbeiten, fab_menue;
 
 
@@ -54,6 +55,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             rezeptname = extras.getString("REZEPTNAME");
+            rezeptid = extras.getInt("REZEPTID");
         }
 
         tv_rezeptname = findViewById(R.id.tv_rezeptname_ru);
@@ -79,8 +81,6 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
 
                     JSONObject obj = new JSONObject(response.toString());
                     JSONArray rezept = obj.getJSONArray("rezeptzutaten");
-
-                    zahl = 01;
 
                     for (int z = 0; z < rezept.length(); z++) {
                         final JSONObject zutatobj = rezept.getJSONObject(z);
@@ -137,6 +137,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         fab_loeschen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rezeptloeschen();
 
             }
         });
@@ -168,5 +169,37 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         fab_loeschen.setClickable(false);
         fab_bearbeiten.setClickable(false);
         menueoffen = false;
+    }
+
+    public void rezeptloeschen() {
+        requestQueue2 = Volley.newRequestQueue(getApplicationContext());
+
+        StringRequest loeschenrequest = new StringRequest(Request.Method.POST, loeschenurl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map <String, String> parameters = new HashMap<String, String>();
+                parameters.put("rezeptid", ""+rezeptid);
+
+
+                return parameters;
+            }
+        };
+
+        //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+        requestQueue.add(loeschenrequest);
+
+        Intent intent = new Intent(RezeptAnsichtActivity.this, RezeptUebersichtActivity.class);
+        startActivity(intent);
     }
 }

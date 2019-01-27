@@ -75,22 +75,27 @@ public class LoginActivity extends AppCompatActivity {
 
                                 String loginerlaubnis = loginerlaubnis_json.getString("login");
 
+                                //das Json Objekt loginerlaubnis speichrt true, wenn Benutzername und Passwort korrekt waren, false wenn nicht
                                 if (loginerlaubnis.equals("true")) {
 
+                                    //JsonObject benutzerid, hat die BenutzerID gespeichert, wenn die Anmeldedaten korrekt waren
                                     JSONObject benutzerid_json = login.getJSONObject(1);
 
                                     benutzerid = benutzerid_json.getInt("ID");
 
                                     JSONObject haushalte_json = login.getJSONObject(2);
 
+                                    //wenn ein Benutzer mehr als einem haushalt zugeordnet ist, ist dieses JsonObject auf true
                                     String haushalte = haushalte_json.getString("mehrhaushalte");
 
                                     if (haushalte.equals("false")) {
 
+                                        //hat der Benutzer nur einen haushalt, wird er sofort auf diesen weitergeleitet
                                         JSONObject haushaltsid_json = login.getJSONObject(3);
 
                                         haushaltsid = haushaltsid_json.getInt("HaushaltsID");
 
+                                        //Alle wichtige Informationen fuer spaeter werden in SharedPreferences geschrieben und koennen so gut uebergeben und ausgelesen werden
                                         SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor spe = idspeicher.edit();
                                         spe.putInt("ID", benutzerid);
@@ -98,8 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                                         spe.putString("Haushaltsname", "Haushalt: "+haushaltsid);
                                         spe.commit();
 
-                                        System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);
-
+                                        //ueber einen Intent wird der Nutzer in das Hauptmenue weiter geleitet
                                         Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
                                         startActivity(intent);
                                     }
@@ -111,8 +115,6 @@ public class LoginActivity extends AppCompatActivity {
                                         spe.putInt("HaushaltsID", -1);
                                         spe.putString("Haushaltsname", "Unbekannter Haushalt");
                                         spe.commit();
-
-                                        System.out.println("Nutzerhaushalte: "+haushaltsid+", "+benutzerid);
 
                                         Intent intent = new Intent(LoginActivity.this, NutzerhaushalteActivity.class);
                                         startActivity(intent);

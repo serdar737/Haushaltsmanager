@@ -58,12 +58,14 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
 
                     JSONObject jobj = new JSONObject(response.toString());
                     JSONArray rezepte = jobj.getJSONArray("rezepte");
+                    JSONArray rezeptids = jobj.getJSONArray("rezeptids");
 
                     for (int z = 0; z < rezepte.length(); z++) {
                         final JSONObject rezept = rezepte.getJSONObject(z);
+                        final JSONObject id = rezeptids.getJSONObject(z);
 
                         btn_rezeptname = new Button(getApplicationContext());
-                        btn_rezeptname.setText(rezept.getString("Name"));
+                        btn_rezeptname.setText(id.getString("ID")+" - "+rezept.getString("Name"));
                         linearlayoutrezepteuebersicht.addView(btn_rezeptname);
 
                         btn_rezeptname.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +74,7 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
                                 Intent intent = new Intent(RezeptUebersichtActivity.this, RezeptAnsichtActivity.class);
                                 try {
                                     intent.putExtra("REZEPTNAME", rezept.getString("Name") );
+                                    intent.putExtra("REZEPTID", id.getInt("ID") );
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

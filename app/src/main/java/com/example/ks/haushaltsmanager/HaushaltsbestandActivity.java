@@ -36,7 +36,7 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
     Button btn_artikel;
     LinearLayout llhaushaltsbestand;
     int haushaltsid;
-    String artikelname;
+    String artikelname, haushaltsname;
     String url = "http://10.0.2.2:3306/zeigehaushaltsbestand.php";
     RequestQueue requestQueue;
 
@@ -48,9 +48,12 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         haushaltsid = prefs.getInt("HaushaltsID", -1);
+        haushaltsname = prefs.getString("Haushaltsname", "Unbekannter Haushalt");
 
         tv_haushaltsname = findViewById(R.id.tv_haushaltsnamehb);
         llhaushaltsbestand = findViewById(R.id.linearlayouthaushaltsbestand);
+
+        tv_haushaltsname.setText(haushaltsname);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
@@ -60,7 +63,7 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
 
                 try {
                     JSONObject obj = new JSONObject(response.toString());
-                    JSONArray bestandsliste = obj.getJSONArray("haushaltsbestand");
+                    JSONArray bestandsliste = obj.getJSONArray("haushaltsbestandsliste");
 
                     for (int z = 0; z < bestandsliste.length(); z++) {
                         JSONObject artikel = bestandsliste.getJSONObject(z);

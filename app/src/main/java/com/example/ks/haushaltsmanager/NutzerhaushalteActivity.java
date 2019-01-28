@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -26,6 +27,8 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
 
     LinearLayout llnutzerhaushalte;
     Button btn_haushalt;
+    TextView tv_benutzername;
+    String name;
 
     int benutzerid;
 
@@ -40,8 +43,11 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         benutzerid = prefs.getInt("ID", -1);
+        name = prefs.getString("Name", "Unbekannter Nutzer");
 
         llnutzerhaushalte = findViewById(R.id.ll_nutzerhaushalte);
+        tv_benutzername = findViewById(R.id.tv_benutzernameuebersicht);
+        tv_benutzername.setText(name);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
@@ -51,15 +57,13 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
 
                 try {
                     JSONObject obj = new JSONObject(response.toString());
-                    JSONArray haushaltids = obj.getJSONArray("ids");
                     JSONArray haushalte = obj.getJSONArray("haushalte");
 
                     for (int z = 0; z < haushalte.length(); z++) {
                         JSONObject haushalt = haushalte.getJSONObject(z);
-                        JSONObject ids = haushaltids.getJSONObject(z);
 
                         btn_haushalt = new Button(getApplicationContext());
-                        btn_haushalt.setText(ids.getString("ID")+" - "+haushalt.getString("Haushaltsname"));
+                        btn_haushalt.setText(haushalt.getInt("HaushaltsID"));
                         llnutzerhaushalte.addView(btn_haushalt);
                     }
 

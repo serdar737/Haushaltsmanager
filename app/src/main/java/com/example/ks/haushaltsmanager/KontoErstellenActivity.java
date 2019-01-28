@@ -95,6 +95,7 @@ public class KontoErstellenActivity extends AppCompatActivity {
                                 SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor spe = prefs.edit();
                                 spe.putInt("ID", benutzerid);
+                                spe.putString("Benutzername", benutzername);
                                 spe.apply();
 
                                 Toast toast = Toast.makeText(getApplicationContext(), "Konto erfolgreich erstellt!", Toast.LENGTH_SHORT);

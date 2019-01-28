@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     int haushaltsid, benutzerid;
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/login.php";
-    String benutzername, passwort;
+    String benutzername, passwort, name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +80,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                     //JsonObject benutzerid, hat die BenutzerID gespeichert, wenn die Anmeldedaten korrekt waren
                                     JSONObject benutzerid_json = login.getJSONObject(1);
-
                                     benutzerid = benutzerid_json.getInt("ID");
 
-                                    JSONObject haushalte_json = login.getJSONObject(2);
+                                    JSONObject name_json = login.getJSONObject(2);
+                                    name = name_json.getString("Name");
+
+                                    JSONObject haushalte_json = login.getJSONObject(3);
 
                                     //wenn ein Benutzer mehr als einem haushalt zugeordnet ist, ist dieses JsonObject auf true
                                     String haushalte = haushalte_json.getString("mehrhaushalte");
@@ -91,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                                     if (haushalte.equals("false")) {
 
                                         //hat der Benutzer nur einen haushalt, wird er sofort auf diesen weitergeleitet
-                                        JSONObject haushaltsid_json = login.getJSONObject(3);
+                                        JSONObject haushaltsid_json = login.getJSONObject(4);
 
                                         haushaltsid = haushaltsid_json.getInt("HaushaltsID");
 
@@ -101,6 +103,8 @@ public class LoginActivity extends AppCompatActivity {
                                         spe.putInt("ID", benutzerid);
                                         spe.putInt("HaushaltsID", haushaltsid);
                                         spe.putString("Haushaltsname", "Haushalt: "+haushaltsid);
+                                        spe.putString("Benutzername", benutzername);
+                                        spe.putString("Name", name);
                                         spe.commit();
 
                                         //ueber einen Intent wird der Nutzer in das Hauptmenue weiter geleitet
@@ -114,6 +118,8 @@ public class LoginActivity extends AppCompatActivity {
                                         spe.putInt("ID", benutzerid);
                                         spe.putInt("HaushaltsID", -1);
                                         spe.putString("Haushaltsname", "Unbekannter Haushalt");
+                                        spe.putString("Benutzername", benutzername);
+                                        spe.putString("Name", name);
                                         spe.commit();
 
                                         Intent intent = new Intent(LoginActivity.this, NutzerhaushalteActivity.class);

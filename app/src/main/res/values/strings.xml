@@ -51,4 +51,5 @@
     <string name="haushaltwechseln">Haushalt wechseln</string>
     <string name="ausloggen">Ausloggen</string>
     <string name="haushaltsbestand">Haushaltsbestand</string>
+    <string name="haushaltsmitglied">Du bist Mitglied folgender Haushalte:</string>
 </resources>

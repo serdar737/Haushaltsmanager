@@ -57,4 +57,5 @@
     <string name="haushaltloeschen">Möchtest du folgenden Haushalt wirklich löschen?</string>
     <string name="ja">Ja, Konto löschen</string>
     <string name="nein">Nein, nicht löschen</string>
+    <string name="benutzerloeschen">Möchtest du wirklich dein Benutzerkonto löschen?</string>
 </resources>

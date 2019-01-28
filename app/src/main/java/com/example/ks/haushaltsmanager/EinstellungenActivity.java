@@ -28,13 +28,14 @@ import java.util.Objects;
 
 public class EinstellungenActivity extends AppCompatActivity {
 
-    Button btn_haushaltwechseln, btn_hilfe, btn_ausloggen, btn_loeschen, btn_benutzerloeschen, btn_haushaltloeschen, btn_ja, btn_nein;
-    int haushaltsid;
+    Button btn_haushaltwechseln, btn_hilfe, btn_ausloggen, btn_loeschen, btn_benutzerloeschen, btn_haushaltloeschen, btn_ja, btn_nein, btn_ja2, btn_nein2;
+    int haushaltsid, benutzerid;
     TextView tv_haushaltsname;
     String haushaltsname;
 
-    RequestQueue requestQueue;
+    RequestQueue requestQueue, requestQueue2;
     String insertUrl = "http://10.0.2.2:3306/loeschehaushalt.php";
+    String insertUrl2 = "http://10.0.2.2:3306/loeschenutzer.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class EinstellungenActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         haushaltsid = prefs.getInt("HaushaltsID", -1);
+        benutzerid = prefs.getInt("ID", -1);
         haushaltsname = prefs.getString("Haushaltsname", "Unbekannter Haushalt");
 
         btn_haushaltwechseln = findViewById(R.id.btn_haushaltwechseln);
@@ -90,7 +92,7 @@ public class EinstellungenActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 AlertDialog.Builder popupbuilder = new AlertDialog.Builder(EinstellungenActivity.this);
-                View popupviewkontenloeschen = getLayoutInflater().inflate(R.layout.popup_kontenloeschen, null);
+                final View popupviewkontenloeschen = getLayoutInflater().inflate(R.layout.popup_kontenloeschen, null);
 
                 btn_benutzerloeschen = popupviewkontenloeschen.findViewById(R.id.btn_benutzerloeschen);
                 btn_haushaltloeschen = popupviewkontenloeschen.findViewById(R.id.btn_haushaltloeschen);
@@ -102,9 +104,37 @@ public class EinstellungenActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        dialogloeschen.hide();
+                        AlertDialog.Builder popupbuilder3 = new AlertDialog.Builder(EinstellungenActivity.this);
+                        View popupviewbenutzerloeschen = getLayoutInflater().inflate(R.layout.popup_benutzerloeschen, null);
+
+                        btn_ja2 = popupviewbenutzerloeschen.findViewById(R.id.btn_bestaetigen2);
+                        btn_nein2 = popupviewbenutzerloeschen.findViewById(R.id.btn_abbruch2);
+
+                        popupbuilder3.setView(popupviewbenutzerloeschen);
+                        final AlertDialog dialogloeschenbenutzer = popupbuilder3.create();
+
+                        btn_ja2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                benutzerkontoLoeschen();
+                                dialogloeschenbenutzer.hide();
+                                dialogloeschen.hide();
+                            }
+                        });
+
+                        btn_nein2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //Wenn der Vorgang der Kontoloeschung abgebrochen wird, kerht der Benutzer zum vorherigen Fenster zurueck
+                                dialogloeschenbenutzer.hide();
+                            }
+                        });
+
+                        dialogloeschenbenutzer.show();
                     }
                 });
+
 
                 btn_haushaltloeschen.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -126,52 +156,7 @@ public class EinstellungenActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
 
-                                requestQueue = Volley.newRequestQueue(getApplicationContext());
-
-                                StringRequest loeschenrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-
-                                        try {
-                                            JSONObject obj = new JSONObject(response);
-
-                                            String loeschbar = obj.getString("loeschbar");
-
-                                            if (loeschbar.equals("true")) {
-                                                Toast toast = Toast.makeText(getApplicationContext(), "Haushalt gelöscht!", Toast.LENGTH_SHORT);
-                                                toast.show();
-
-                                                Intent intent = new Intent(EinstellungenActivity.this, NutzerhaushalteActivity.class);
-                                                startActivity(intent);
-                                            }
-                                            else {
-                                                Toast toast = Toast.makeText(getApplicationContext(), "Haushalt kann nicht  gelöscht werden! Es sind noch Nutzer angemeldet.", Toast.LENGTH_LONG);
-                                                toast.show();
-                                            }
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-
-                                    }
-                                })
-                                {
-                                    @Override
-                                    protected Map<String, String> getParams() throws AuthFailureError {
-                                        Map <String, String> parameters = new HashMap<String, String>();
-                                        parameters.put("haushaltsid", ""+haushaltsid);
-
-
-                                        return parameters;
-                                    }
-                                };
-
-                                //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
-                                requestQueue.add(loeschenrequest);
+                                haushaltLoeschen();
 
                                 dialogloeschenhaushalt.hide();
                                 dialogloeschen.hide();
@@ -197,5 +182,117 @@ public class EinstellungenActivity extends AppCompatActivity {
                 dialogloeschen.show();
             }
         });
+    }
+
+    public void benutzerkontoLoeschen() {
+        requestQueue2 = Volley.newRequestQueue(getApplicationContext());
+
+        StringRequest loeschenrequest2 = new StringRequest(Request.Method.POST, insertUrl2, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    String geloescht = obj.getString("geloescht");
+
+                    if (geloescht.equals("true")) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Benutzerkonto gelöscht!", Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor spe = prefs.edit();
+                        spe.putInt("HaushaltsID", -1);
+                        spe.putString("Haushaltsname", "Unbekannter Haushalt");
+                        spe.putInt("ID", -1);
+                        spe.apply();
+
+                        Intent intent = new Intent(EinstellungenActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Konto kann nicht gelöscht werden, da du noch in Haushalten angemeldet bist.", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map <String, String> parameters = new HashMap<String, String>();
+                parameters.put("haushaltsid", ""+haushaltsid);
+                parameters.put("benutzerid", ""+benutzerid);
+
+
+                return parameters;
+            }
+        };
+
+        //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+        requestQueue2.add(loeschenrequest2);
+    }
+
+    public void haushaltLoeschen() {
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        StringRequest loeschenrequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+
+                    String loeschbar = obj.getString("loeschbar");
+
+                    if (loeschbar.equals("true")) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Haushalt gelöscht!", Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor spe = prefs.edit();
+                        spe.putInt("HaushaltsID", -1);
+                        spe.putString("Haushaltsname", "Unbekannter Haushalt");
+                        spe.apply();
+
+                        Intent intent = new Intent(EinstellungenActivity.this, EinstellungenActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Haushalt kann nicht  gelöscht werden! Es sind noch Nutzer angemeldet.", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map <String, String> parameters = new HashMap<String, String>();
+                parameters.put("haushaltsid", ""+haushaltsid);
+
+
+                return parameters;
+            }
+        };
+
+        //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+        requestQueue.add(loeschenrequest);
     }
 }

@@ -59,73 +59,84 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String temp_haushaltsid = et_haushaltsid.getText().toString();
+                if (et_haushaltsid.getText().toString().equals("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Bitte fülle alle Felder aus", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else if (et_passwort.getText().toString().equals("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Bitte fülle alle Felder aus", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
+                    String temp_haushaltsid = et_haushaltsid.getText().toString();
 
-                haushaltsid = Integer.parseInt(temp_haushaltsid);
+                    haushaltsid = Integer.parseInt(temp_haushaltsid);
 
-                requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-                StringRequest request = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+                    StringRequest request = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
-                        try {
-                            JSONObject obj = new JSONObject(response.toString());
+                            try {
+                                JSONObject obj = new JSONObject(response.toString());
 
-                            JSONArray login = obj.getJSONArray("beitreten");
+                                JSONArray login = obj.getJSONArray("beitreten");
 
-                            JSONObject loginerlaubnis_json = login.getJSONObject(0);
+                                JSONObject loginerlaubnis_json = login.getJSONObject(0);
 
-                            String loginerlaubnis = loginerlaubnis_json.getString("login");
+                                String loginerlaubnis = loginerlaubnis_json.getString("login");
 
-                            //das Json Objekt loginerlaubnis speichert true, wenn HaushaltsID und Passwort korrekt waren, false wenn nicht
-                            if (loginerlaubnis.equals("true")) {
+                                //das Json Objekt loginerlaubnis speichert true, wenn HaushaltsID und Passwort korrekt waren, false wenn nicht
+                                if (loginerlaubnis.equals("true")) {
 
-                                //Wenn die Anmeldedaten korrekt waren, liest das JsonObject den Haushaltsnamen aus
-                                JSONObject haushaltsname_json = login.getJSONObject(1);
+                                    //Wenn die Anmeldedaten korrekt waren, liest das JsonObject den Haushaltsnamen aus
+                                    JSONObject haushaltsname_json = login.getJSONObject(1);
 
-                                haushaltname = haushaltsname_json.getString("Haushaltsname");
+                                    haushaltname = haushaltsname_json.getString("Haushaltsname");
 
-                                SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor spe = prefs.edit();
-                                spe.putInt("HaushaltsID", haushaltsid);
-                                spe.putString("Haushaltsname", haushaltname);
-                                spe.apply();
+                                    SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor spe = prefs.edit();
+                                    spe.putInt("HaushaltsID", haushaltsid);
+                                    spe.putString("Haushaltsname", haushaltname);
+                                    spe.apply();
 
-                                Intent intent = new Intent(HaushaltBeitretenActivity.this, HauptmenueActivity.class);
-                                startActivity(intent);
+                                    Intent intent = new Intent(HaushaltBeitretenActivity.this, HauptmenueActivity.class);
+                                    startActivity(intent);
 
+                                }
+                                else {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "HaushaltsID oder Passwort falsch", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                System.out.println("Fehler im Haushalt erstellen bei der Json Abfrage");
                             }
-                            else {
-                                Toast toast = Toast.makeText(getApplicationContext(), "HaushaltsID oder Passwort falsch", Toast.LENGTH_SHORT);
-                                toast.show();
-                            }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            System.out.println("Fehler im Haushalt erstellen bei der Json Abfrage");
                         }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> parameters = new HashMap<String, String>();
+                            parameters.put("haushaltsid", ""+haushaltsid);
+                            parameters.put("benutzerid", ""+nutzerid);
+                            parameters.put("passwort", et_passwort.getText().toString());
 
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> parameters = new HashMap<String, String>();
-                        parameters.put("haushaltsid", ""+haushaltsid);
-                        parameters.put("benutzerid", ""+nutzerid);
-                        parameters.put("passwort", et_passwort.getText().toString());
+                            return parameters;
+                        }
+                    };
 
-                        return parameters;
-                    }
-                };
+                    //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+                    requestQueue.add(request);
 
-                //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
-                requestQueue.add(request);
+                }
 
             }
         });

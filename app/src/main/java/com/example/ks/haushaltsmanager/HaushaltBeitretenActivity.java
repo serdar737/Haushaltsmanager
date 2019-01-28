@@ -1,5 +1,6 @@
 package com.example.ks.haushaltsmanager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,6 +19,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,10 +31,11 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
 
     Button btn_beitreten, btn_abbruch, btn_hilfe, btn_neuenhaushalt;
     EditText et_haushaltsid, et_passwort;
-    int nutzerid;
+    int nutzerid, haushaltsid;
 
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/haushaltbeitreten.php";
+    String haushaltname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +53,15 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         nutzerid = prefs.getInt("ID", -1);
 
+        System.out.println("Benutzerid: "+nutzerid);
+
         btn_beitreten.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String temp_haushaltsid = et_haushaltsid.getText().toString();
+
+                haushaltsid = Integer.parseInt(temp_haushaltsid);
 
                 requestQueue = Volley.newRequestQueue(getApplicationContext());
 
@@ -56,9 +69,42 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
 
-                        //TODO: Bei richtiger Eingabe von Passwort und HaushaltsID wird die neue Activity geoeffnet
-                        Intent intent = new Intent(HaushaltBeitretenActivity.this, HauptmenueActivity.class);
-                        startActivity(intent);
+                        try {
+                            JSONObject obj = new JSONObject(response.toString());
+
+                            JSONArray login = obj.getJSONArray("beitreten");
+
+                            JSONObject loginerlaubnis_json = login.getJSONObject(0);
+
+                            String loginerlaubnis = loginerlaubnis_json.getString("login");
+
+                            //das Json Objekt loginerlaubnis speichert true, wenn HaushaltsID und Passwort korrekt waren, false wenn nicht
+                            if (loginerlaubnis.equals("true")) {
+
+                                //Wenn die Anmeldedaten korrekt waren, liest das JsonObject den Haushaltsnamen aus
+                                JSONObject haushaltsname_json = login.getJSONObject(1);
+
+                                haushaltname = haushaltsname_json.getString("Haushaltsname");
+
+                                SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor spe = prefs.edit();
+                                spe.putInt("HaushaltsID", haushaltsid);
+                                spe.putString("Haushaltsname", haushaltname);
+                                spe.apply();
+
+                                Intent intent = new Intent(HaushaltBeitretenActivity.this, HauptmenueActivity.class);
+                                startActivity(intent);
+
+                            }
+                            else {
+                                Toast toast = Toast.makeText(getApplicationContext(), "HaushaltsID oder Passwort falsch", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            System.out.println("Fehler im Haushalt erstellen bei der Json Abfrage");
+                        }
 
                     }
                 }, new Response.ErrorListener() {
@@ -70,9 +116,9 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> parameters = new HashMap<String, String>();
-                        parameters.put("haushaltsid", et_haushaltsid.getText().toString());
+                        parameters.put("haushaltsid", ""+haushaltsid);
+                        parameters.put("benutzerid", ""+nutzerid);
                         parameters.put("passwort", et_passwort.getText().toString());
-                        parameters.put("id", ""+nutzerid);
 
                         return parameters;
                     }

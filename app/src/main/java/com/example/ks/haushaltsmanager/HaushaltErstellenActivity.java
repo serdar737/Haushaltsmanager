@@ -82,17 +82,23 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor spe = prefs.edit();
-                            spe.putInt("HaushaltsID", haushaltsid);
-                            spe.putString("Haushaltsname", haushaltname);
-                            spe.apply();
+                            if (haushaltsid == -1) {
+                                Toast toast = Toast.makeText(getApplicationContext(), "Haushaltsname bereits vergeben!", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                            else {
+                                SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor spe = prefs.edit();
+                                spe.putInt("HaushaltsID", haushaltsid);
+                                spe.putString("Haushaltsname", haushaltname);
+                                spe.apply();
 
-                            Toast toast = Toast.makeText(getApplicationContext(), "Haushalt erfolgreich erstellt!", Toast.LENGTH_SHORT);
-                            toast.show();
+                                Toast toast = Toast.makeText(getApplicationContext(), "Haushalt erfolgreich erstellt!", Toast.LENGTH_SHORT);
+                                toast.show();
 
-                            Intent intent = new Intent(HaushaltErstellenActivity.this, HauptmenueActivity.class);
-                            startActivity(intent);
+                                Intent intent = new Intent(HaushaltErstellenActivity.this, HauptmenueActivity.class);
+                                startActivity(intent);
+                            }
 
                         }
                     }, new Response.ErrorListener() {

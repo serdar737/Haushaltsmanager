@@ -29,7 +29,7 @@ import java.util.Objects;
 
 public class RezeptBearbeitenActivity extends AppCompatActivity {
 
-    EditText et_zutat, et_beschreibung;
+    EditText et_zutat, et_beschreibung, et_menge;
     String rezeptnametemp;
     Button btn_rezepthinzufuegen, btn_zutathinzufuegen;
     LinearLayout linearleayoutrezepterstellen;
@@ -62,6 +62,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
         fab_zutathinzufuegen = findViewById(R.id.fab_zutathinzufuegen);
         et_beschreibung = findViewById(R.id.et_beschreibung);
 
+
         fab_zutathinzufuegen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +71,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                 View popupviewrezepte = getLayoutInflater().inflate(R.layout.popup_zutathinzufuegen, null);
 
                 et_zutat = popupviewrezepte.findViewById(R.id.et_zutat);
+                et_menge = popupviewrezepte.findViewById(R.id.et_zutatmenge);
                 btn_zutathinzufuegen = popupviewrezepte.findViewById(R.id.btn_zutathinzufuegenpopup);
 
                 popupbuilder2.setView(popupviewrezepte);
@@ -156,15 +158,15 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
 
         if(zutat01.equals("-1")) {
             zutat01 = et_zutat.getText().toString();
-            zutat.setText(zutat01);
+            zutat.setText(zutat01+" Menge: "+et_menge.getText());
         }
         else if (zutat02.equals("-1")) {
             zutat02 = et_zutat.getText().toString();
-            zutat.setText(zutat02);
+            zutat.setText(zutat02+" Menge: "+et_menge.getText());
         }
         else if (zutat03.equals("-1")) {
             zutat03 = et_zutat.getText().toString();
-            zutat.setText(zutat03);
+            zutat.setText(zutat03+" Menge: "+et_menge.getText());
         }
         else if (zutat04.equals("-1")) {
             zutat04 = et_zutat.getText().toString();

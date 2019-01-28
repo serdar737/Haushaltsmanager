@@ -63,7 +63,7 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
                         JSONObject haushalt = haushalte.getJSONObject(z);
 
                         btn_haushalt = new Button(getApplicationContext());
-                        btn_haushalt.setText(haushalt.getInt("HaushaltsID"));
+                        btn_haushalt.setText(haushalt.getString("HaushaltsID"));
                         llnutzerhaushalte.addView(btn_haushalt);
                     }
 

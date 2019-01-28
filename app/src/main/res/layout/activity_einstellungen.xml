@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="395dp"
-        android:layout_height="386dp"
+        android:layout_height="470dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -17,8 +17,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.837">
 
         <Button
             android:id="@+id/btn_haushaltwechseln"
@@ -26,7 +28,7 @@
             android:layout_height="127dp"
             android:text="@string/haushaltwechseln"
             android:textAllCaps="false"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/btn_hilfeaufrufen"
@@ -34,13 +36,21 @@
             android:layout_height="127dp"
             android:text="@string/hilfe"
             android:textAllCaps="false"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/btn_ausloggen"
             android:layout_width="match_parent"
             android:layout_height="127dp"
             android:text="@string/ausloggen"
+            android:textAllCaps="false"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btn_loeschen"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:text="@string/löschen"
             android:textAllCaps="false"
             android:textSize="18sp" />
     </LinearLayout>

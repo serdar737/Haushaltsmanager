@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     int haushaltsid, benutzerid;
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/login.php";
-    String benutzername, passwort, name;
+    String benutzername, passwort, name, haushaltsname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,15 +94,17 @@ public class LoginActivity extends AppCompatActivity {
 
                                         //hat der Benutzer nur einen haushalt, wird er sofort auf diesen weitergeleitet
                                         JSONObject haushaltsid_json = login.getJSONObject(4);
-
                                         haushaltsid = haushaltsid_json.getInt("HaushaltsID");
+
+                                        JSONObject haushaltsname_json = login.getJSONObject(5);
+                                        haushaltsname = haushaltsname_json.getString("Haushaltsname");
 
                                         //Alle wichtige Informationen fuer spaeter werden in SharedPreferences geschrieben und koennen so gut uebergeben und ausgelesen werden
                                         SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor spe = idspeicher.edit();
                                         spe.putInt("ID", benutzerid);
                                         spe.putInt("HaushaltsID", haushaltsid);
-                                        spe.putString("Haushaltsname", "Haushalt: "+haushaltsid);
+                                        spe.putString("Haushaltsname", haushaltsname);
                                         spe.putString("Benutzername", benutzername);
                                         spe.putString("Name", name);
                                         spe.commit();

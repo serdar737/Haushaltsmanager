@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,6 +18,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -128,6 +132,26 @@ public class EinstellungenActivity extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
 
+                                        try {
+                                            JSONObject obj = new JSONObject(response);
+
+                                            String loeschbar = obj.getString("loeschbar");
+
+                                            if (loeschbar.equals("true")) {
+                                                Toast toast = Toast.makeText(getApplicationContext(), "Haushalt gelöscht!", Toast.LENGTH_SHORT);
+                                                toast.show();
+
+                                                Intent intent = new Intent(EinstellungenActivity.this, NutzerhaushalteActivity.class);
+                                                startActivity(intent);
+                                            }
+                                            else {
+                                                Toast toast = Toast.makeText(getApplicationContext(), "Haushalt kann nicht  gelöscht werden! Es sind noch Nutzer angemeldet.", Toast.LENGTH_LONG);
+                                                toast.show();
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
@@ -151,9 +175,6 @@ public class EinstellungenActivity extends AppCompatActivity {
 
                                 dialogloeschenhaushalt.hide();
                                 dialogloeschen.hide();
-
-                                Intent intent = new Intent(EinstellungenActivity.this, NutzerhaushalteActivity.class);
-                                startActivity(intent);
 
                             }
                         });

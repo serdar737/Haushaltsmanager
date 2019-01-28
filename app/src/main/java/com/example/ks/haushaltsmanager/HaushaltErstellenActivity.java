@@ -75,7 +75,6 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
                             try {
                                 JSONObject obj = new JSONObject(response);
                                 haushaltsid = obj.getInt("haushaltsid");
-                                System.out.println(haushaltsid);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

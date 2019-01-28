@@ -28,7 +28,7 @@ import java.util.Objects;
 
 public class EinstellungenActivity extends AppCompatActivity {
 
-    Button btn_haushaltwechseln, btn_hilfe, btn_ausloggen, btn_loeschen, btn_benutzerloeschen, btn_haushaltloeschen, btn_ja, btn_nein, btn_ja2, btn_nein2;
+    Button btn_haushaltwechseln, btn_hilfe, btn_ausloggen, btn_loeschen, btn_benutzerloeschen, btn_haushaltloeschen, btn_ja, btn_nein, btn_ja2, btn_nein2, btn_info;
     int haushaltsid, benutzerid;
     TextView tv_haushaltsname;
     String haushaltsname;
@@ -52,12 +52,21 @@ public class EinstellungenActivity extends AppCompatActivity {
         btn_hilfe = findViewById(R.id.btn_hilfeaufrufen);
         btn_ausloggen = findViewById(R.id.btn_ausloggen);
         btn_loeschen = findViewById(R.id.btn_loeschen);
+        btn_info = findViewById(R.id.btn_haushaltsinfo);
 
         btn_haushaltwechseln.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent intent = new Intent(EinstellungenActivity.this, NutzerhaushalteActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EinstellungenActivity.this, HaushaltsInformationenActivity.class);
                 startActivity(intent);
             }
         });

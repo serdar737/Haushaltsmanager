@@ -58,4 +58,6 @@
     <string name="ja">Ja, Konto löschen</string>
     <string name="nein">Nein, nicht löschen</string>
     <string name="benutzerloeschen">Möchtest du wirklich dein Benutzerkonto löschen?</string>
+    <string name="haushaltinfo">Haushaltsinformationen</string>
+    <string name="verlassen">Haushalt verlassen</string>
 </resources>

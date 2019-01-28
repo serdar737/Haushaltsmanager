@@ -66,6 +66,10 @@ public class KontoErstellenActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), "Bitte fülle alle Felder aus!", Toast.LENGTH_SHORT);
                     toast.show();
                 }
+                else if (email.equals("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Bitte fülle alle Felder aus!", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 else if (passwort.equals("")) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Bitte fülle alle Felder aus!", Toast.LENGTH_SHORT);
                     toast.show();
@@ -113,6 +117,8 @@ public class KontoErstellenActivity extends AppCompatActivity {
                             Map <String, String> parameters = new HashMap<String, String>();
                             parameters.put("benutzername", benutzername);
                             parameters.put("name", name);
+
+                            parameters.put("email", email);
                             parameters.put("passwort", passwort);
 
                             return parameters;

@@ -28,7 +28,7 @@ import java.util.Objects;
 
 public class HaushaltErstellenActivity extends AppCompatActivity {
 
-    EditText et_haushalterstellenname, et_haushalterstellenanschrift, et_haushalterstellenbeschreibung, et_haushalterstellenpasswort;
+    EditText et_haushalterstellenname, et_haushalterstellenbeschreibung, et_haushalterstellenpasswort;
     Button btn_haushalterstellen, btn_haushaltbeitreten;
 
     RequestQueue requestQueue;
@@ -45,7 +45,6 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
         benutzerid = prefs.getInt("ID", -1);
 
         et_haushalterstellenname = findViewById(R.id.et_haushalterstellenname);
-        et_haushalterstellenanschrift = findViewById(R.id.et_haushalterstellenanschrift);
         et_haushalterstellenpasswort = findViewById(R.id.et_haushalterstellenpasswort);
         et_haushalterstellenbeschreibung = findViewById(R.id.editText3);
         btn_haushalterstellen = findViewById(R.id.btn_haushalterstellen);
@@ -57,7 +56,6 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final String haushaltname = et_haushalterstellenname.getText().toString();
-                final String haushaltanschrift = et_haushalterstellenanschrift.getText().toString();
                 final String haushaltbeschreibung = et_haushalterstellenbeschreibung.getText().toString();
                 final String haushaltpasswort = et_haushalterstellenpasswort.getText().toString();
 

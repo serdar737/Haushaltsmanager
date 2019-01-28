@@ -83,16 +83,22 @@ public class KontoErstellenActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor spe = prefs.edit();
-                            spe.putInt("ID", benutzerid);
-                            spe.apply();
+                            if (benutzerid == -1) {
+                                Toast toast = Toast.makeText(getApplicationContext(), "Benutzername bereits in Gebrauch!", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                            else {
+                                SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor spe = prefs.edit();
+                                spe.putInt("ID", benutzerid);
+                                spe.apply();
 
-                            Toast toast = Toast.makeText(getApplicationContext(), "Konto erfolgreich erstellt!", Toast.LENGTH_SHORT);
-                            toast.show();
+                                Toast toast = Toast.makeText(getApplicationContext(), "Konto erfolgreich erstellt!", Toast.LENGTH_SHORT);
+                                toast.show();
 
-                            Intent intent = new Intent(KontoErstellenActivity.this, HaushaltBeitretenActivity.class);
-                            startActivity(intent);
+                                Intent intent = new Intent(KontoErstellenActivity.this, HaushaltBeitretenActivity.class);
+                                startActivity(intent);
+                            }
 
                         }
                     }, new Response.ErrorListener() {

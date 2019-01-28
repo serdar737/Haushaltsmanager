@@ -1,8 +1,12 @@
 package com.example.ks.haushaltsmanager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,12 +32,13 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
     LinearLayout llnutzerhaushalte;
     Button btn_haushalt;
     TextView tv_benutzername;
-    String name;
+    String name, haushaltsname;
+    FloatingActionButton fab_erstellen;
 
-    int benutzerid;
+    int benutzerid, haushaltsid;
 
     RequestQueue requestQueue;
-    String insertUrl = "http://10.0.2.2:3306/zeigehaushalte.php";
+    String insertUrl = "http://10.0.2.2:3306/zeigenutzerhaushalte.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,7 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
         benutzerid = prefs.getInt("ID", -1);
         name = prefs.getString("Name", "Unbekannter Nutzer");
 
+        fab_erstellen = findViewById(R.id.fab_haushalterstellen);
         llnutzerhaushalte = findViewById(R.id.ll_nutzerhaushalte);
         tv_benutzername = findViewById(R.id.tv_benutzernameuebersicht);
         tv_benutzername.setText(name);
@@ -57,26 +63,51 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
 
                 try {
                     JSONObject obj = new JSONObject(response.toString());
-                    JSONArray haushalte = obj.getJSONArray("haushalte");
+                    JSONArray id = obj.getJSONArray("id");
+                    JSONArray name = obj.getJSONArray("name");
 
-                    for (int z = 0; z < haushalte.length(); z++) {
-                        JSONObject haushalt = haushalte.getJSONObject(z);
+                    for (int z = 0; z < id.length(); z++) {
+                        final JSONObject haushaltsid_json = id.getJSONObject(z);
+                        final JSONObject haushaltsname_json = name.getJSONObject(z);
+
+                        haushaltsid = haushaltsid_json.getInt("HaushaltsID");
+                        haushaltsname = haushaltsname_json.getString("Haushaltsname");
 
                         btn_haushalt = new Button(getApplicationContext());
-                        btn_haushalt.setText(haushalt.getString("HaushaltsID"));
+                        btn_haushalt.setText(haushaltsname+" ["+haushaltsid+"]");
                         llnutzerhaushalte.addView(btn_haushalt);
+
+                        btn_haushalt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor spe = prefs.edit();
+                                spe.putInt("ID", benutzerid);
+                                try {
+                                    spe.putInt("HaushaltsID", haushaltsid_json.getInt("HaushaltsID"));
+                                    spe.putString("Haushaltsname", haushaltsname_json.getString("Haushaltsname"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                spe.apply();
+
+                                Intent intent = new Intent(NutzerhaushalteActivity.this, HauptmenueActivity.class);
+                                startActivity(intent);
+                            }
+                        });
                     }
 
                 }
                 catch (JSONException e) {
-
+                    System.out.println("JsonException");
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                System.out.println("ResponseException");
             }
         })
         {
@@ -90,5 +121,14 @@ public class NutzerhaushalteActivity extends AppCompatActivity {
         };
 
         requestQueue.add(request);
+
+        fab_erstellen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(NutzerhaushalteActivity.this, HaushaltErstellenActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

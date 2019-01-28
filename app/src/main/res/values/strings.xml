@@ -54,4 +54,7 @@
     <string name="haushaltsmitglied">Du bist Mitglied folgender Haushalte:</string>
     <string name="löschen">Nutzer oder Haushalt löschen</string>
     <string name="wasloeschen">Wähle aus, welche Art von Konto du löschen möchtest</string>
+    <string name="haushaltloeschen">Möchtest du folgenden Haushalt wirklich löschen?</string>
+    <string name="ja">Ja, Konto löschen</string>
+    <string name="nein">Nein, nicht löschen</string>
 </resources>

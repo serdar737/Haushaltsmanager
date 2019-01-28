@@ -78,15 +78,18 @@ public class KontoErstellenActivity extends AppCompatActivity {
 
                             try {
                                 JSONObject obj = new JSONObject(response);
-                                benutzerid = Integer.parseInt(obj.getJSONObject("ID").toString());
+                                benutzerid = obj.getInt("ID");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
                             SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                             SharedPreferences.Editor spe = prefs.edit();
-                            spe.putInt("BenutzerID", benutzerid);
+                            spe.putInt("ID", benutzerid);
                             spe.apply();
+
+                            Toast toast = Toast.makeText(getApplicationContext(), "Konto erfolgreich erstellt!", Toast.LENGTH_SHORT);
+                            toast.show();
 
                             Intent intent = new Intent(KontoErstellenActivity.this, HaushaltBeitretenActivity.class);
                             startActivity(intent);

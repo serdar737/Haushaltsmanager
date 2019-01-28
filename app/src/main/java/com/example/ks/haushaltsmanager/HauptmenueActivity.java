@@ -19,6 +19,7 @@ public class HauptmenueActivity extends AppCompatActivity {
     TextView tv_haushaltsname;
     Button btn_einkaufsliste, btn_rezeptuebersicht, btn_einstellungen, btn_haushaltsbestand;
     String haushaltsname;
+    int haushaltsid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class HauptmenueActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         haushaltsname = prefs.getString("Haushaltsname", "Unbekannter Haushalt");
+        haushaltsid = prefs.getInt("HaushaltsID", -1);
 
         tv_haushaltsname = findViewById(R.id.tv_haushalthauptmenue);
         btn_einkaufsliste = findViewById(R.id.btn_einkaufsliste);
@@ -35,7 +37,7 @@ public class HauptmenueActivity extends AppCompatActivity {
         btn_haushaltsbestand = findViewById(R.id.btn_haushaltsbestand);
         btn_einstellungen = findViewById(R.id.btn_einstellungen);
 
-        tv_haushaltsname.setText(haushaltsname);
+        tv_haushaltsname.setText(haushaltsname+": "+haushaltsid);
 
         btn_einkaufsliste.setOnClickListener(new View.OnClickListener() {
             @Override

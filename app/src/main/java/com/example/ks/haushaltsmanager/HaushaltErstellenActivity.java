@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,7 +76,12 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
 
                             try {
                                 JSONObject obj = new JSONObject(response);
-                                haushaltsid = Integer.parseInt(obj.getJSONObject("ID").toString());
+
+                                JSONArray auslesen = obj.getJSONArray("id");
+
+                                JSONObject idobj = auslesen.getJSONObject(0);
+
+                                haushaltsid = idobj.getInt("haushaltsid");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -83,6 +89,7 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
                             SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                             SharedPreferences.Editor spe = prefs.edit();
                             spe.putInt("HaushaltsID", haushaltsid);
+                            spe.putString("Haushaltsname", haushaltname);
                             spe.apply();
 
                             Toast toast = Toast.makeText(getApplicationContext(), "Haushalt erfolgreich erstellt!", Toast.LENGTH_SHORT);

@@ -79,14 +79,14 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
 
                 try {
 
-                    JSONObject obj = new JSONObject(response.toString());
-                    JSONArray rezept = obj.getJSONArray("rezeptzutaten");
+                    JSONObject obj = new JSONObject(response);
+                    JSONArray rezept = obj.getJSONArray("rezept");
 
                     for (int z = 0; z < rezept.length(); z++) {
                         final JSONObject zutatobj = rezept.getJSONObject(z);
 
                         tv_zutat = new TextView(getApplicationContext());
-                        tv_zutat.setText(zutatobj.getString("Zutat01"));
+                        tv_zutat.setText(zutatobj.getString("Beschreibung"));
                         zahl++;
                         ll_zutaten.addView(tv_zutat);
                     }

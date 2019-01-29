@@ -88,6 +88,8 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
                                et_verfallsdatum = popupview.findViewById(R.id.et_verfallsdatum);
                                btn_weiter = popupview.findViewById(R.id.btn_weiter_bestand);
 
+                               String tempmenge = et_menge.getText().toString();
+
                                popupbuilder.setView(popupview);
                                final AlertDialog dialog = popupbuilder.create();
 
@@ -113,6 +115,11 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
                                            protected Map<String, String> getParams() throws AuthFailureError {
                                                Map<String, String> parameters = new HashMap<String, String>();
                                                parameters.put("artikelid", ""+artikelid);
+                                               //parameters.put("menge", menge);
+                                               //parameters.put("masseinheit", masseinheit);
+                                               //parameters.put("verfallsdatum", verfallsdatum);
+                                               //parameters.put("kaufhauefigkeit", kaufhauefigkeit);
+
 
                                                return parameters;
                                            }

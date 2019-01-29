@@ -30,19 +30,34 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * EinkaufslisteActivity
+ * Diese Activity beinhaltet die Einkaufsliste des Haushaltes.
+ * Sobald die Activity geoeffnet wird, wird eine DB Verbindung gestartet und ueber die String Request mithilfe der zugewiesenen
+ * php-Datei, die Artikel ausgelesen und eine CheckBox mit dem Artikelnamen erstellt, die zu dem Haushalt gehoeren.
+ */
+
 public class EinkaufslisteActivity extends AppCompatActivity {
 
-    TextView tv_haushaltsname;
-    FloatingActionButton fab_artikelhinzufuegen;
-    LinearLayout linearlayoutartikel;
     Button btn_weiter;
-    EditText et_artikelname, et_menge, et_kaufhaeufigkeit;
-    String artikelname;
+
     CheckBox checkbox;
+
+    EditText et_artikelname, et_menge, et_kaufhaeufigkeit;
+
+    FloatingActionButton fab_artikelhinzufuegen;
+
     int haushaltsid, menge;
+
+    LinearLayout linearlayoutartikel;
+
     RequestQueue requestQueue, requestQueue2;
+
+    String artikelname;
     String insertUrl = "http://10.0.2.2:3306/artikelzueinkaufsliste.php";
     String readUrl = "http://10.0.2.2:3306/zeigeeinkaufsliste.php";
+
+    TextView tv_haushaltsname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +74,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
         leseEinkaufsliste();
 
-
+        //FloatingActionButton oeffnet ein PopupFenster zum hinzufuegen eines neuen Artikels
         fab_artikelhinzufuegen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +93,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        //If-Schleife da DB eine Eingabe der Menge fordert
+                        //Eine Menge muss mit eingegeben werden, solange dies nicht der Fall ist, kann kein neuer Artikel hinzugefuegt werden
                         String tempmenge = et_menge.getText().toString();
 
                         if (tempmenge.equals("")) {
@@ -100,6 +115,10 @@ public class EinkaufslisteActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Die Methode artikelCheckBoxNeu erstellt mit der Eingabe des Artikelnamens eine neue Checkbox und fuegt diese
+     * dem LinearLayout dynamisch hinzu
+     */
     public void artikelCheckBoxNeu() {
         checkbox = new CheckBox(getApplicationContext());
         checkbox.setText(artikelname);
@@ -133,6 +152,10 @@ public class EinkaufslisteActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    /**
+     * Die Methode leseEinkaufsliste wird im onCreate der Activity aufgerufen und beinhaltet die StringRequest um aus der DB die
+     * Artikel die zu der Einkaufsliste des Haushaltes gehoeren zu lesen
+     */
     public void leseEinkaufsliste() {
 
         requestQueue2 = Volley.newRequestQueue(getApplicationContext());

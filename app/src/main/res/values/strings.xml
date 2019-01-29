@@ -61,4 +61,8 @@
     <string name="haushaltinfo">Haushaltsinformationen</string>
     <string name="verlassen">Haushalt verlassen</string>
     <string name="mitglieder">Folgende Nutzer sind Mitglied in diesem Haushalt:</string>
+    <string name="haushaltverlassen">Möchtest du folgenden haushalt wirklich verlassen?</string>
+    <string name="haushaltverlassenanweisung">Wenn du der letzte Nutzer dieses Haushalts bist, wird er geloescht.</string>
+    <string name="abbrechen">Abbrechen</string>
+    <string name="verlasse">Haushalt verlassen</string>
 </resources>

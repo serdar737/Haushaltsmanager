@@ -3,6 +3,7 @@ package com.example.ks.haushaltsmanager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,9 +30,9 @@ import java.util.Objects;
 
 public class HaushaltsInformationenActivity extends AppCompatActivity {
 
-    Button btn_verlassen;
+    Button btn_verlassen, btn_ja, btn_nein;
     boolean verlassen;
-    TextView tv_haushaltsnameinfo;
+    TextView tv_haushaltsnameinfo, tv_haushaltsname;
     int benutzerid, haushaltsid;
     String haushaltsname, name;
     LinearLayout ll_mitglieder;
@@ -64,7 +65,34 @@ public class HaushaltsInformationenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                verlasseHaushalt();
+                AlertDialog.Builder popupbuilder = new AlertDialog.Builder(HaushaltsInformationenActivity.this);
+                View popupviewhaushaltlverlassen = getLayoutInflater().inflate(R.layout.popup_haushaltverlassen, null);
+
+                btn_ja = popupviewhaushaltlverlassen.findViewById(R.id.btn_bestaetigenverlassen);
+                btn_nein = popupviewhaushaltlverlassen.findViewById(R.id.btn_abbruchverlassen);
+                tv_haushaltsname = popupviewhaushaltlverlassen.findViewById(R.id.tv_haushaltsnameverlassen);
+
+                tv_haushaltsname.setText(haushaltsname);
+
+                popupbuilder.setView(popupviewhaushaltlverlassen);
+                final AlertDialog dialogverlassen = popupbuilder.create();
+
+                btn_ja.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        verlasseHaushalt();
+                        dialogverlassen.hide();
+                    }
+                });
+
+                btn_nein.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogverlassen.hide();
+                    }
+                });
+
+                dialogverlassen.show();
             }
         });
     }

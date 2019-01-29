@@ -26,16 +26,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Die Activity Einstellungen beinhaltet die Benutzer und Haushaltseinstellungen.
+ * Sie wird vom Hauptmenue aus aufgerufen.
+ */
 public class EinstellungenActivity extends AppCompatActivity {
 
     Button btn_haushaltwechseln, btn_hilfe, btn_ausloggen, btn_loeschen, btn_benutzerloeschen, btn_haushaltloeschen, btn_ja, btn_nein, btn_ja2, btn_nein2, btn_info;
+
     int haushaltsid, benutzerid;
-    TextView tv_haushaltsname;
-    String haushaltsname;
 
     RequestQueue requestQueue, requestQueue2;
+
     String insertUrl = "http://10.0.2.2:3306/loeschehaushalt.php";
     String insertUrl2 = "http://10.0.2.2:3306/loeschenutzer.php";
+    String haushaltsname;
+
+    TextView tv_haushaltsname;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,7 @@ public class EinstellungenActivity extends AppCompatActivity {
         btn_loeschen = findViewById(R.id.btn_loeschen);
         btn_info = findViewById(R.id.btn_haushaltsinfo);
 
+        //Dieser Button leitet den Benutzer in die Uebersicht seiner Haushalte weiter
         btn_haushaltwechseln.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +73,7 @@ public class EinstellungenActivity extends AppCompatActivity {
             }
         });
 
+        //Dieser Button leitet den Benutzer in die Uebersicht des Haushalts weiter, in welchem er angemeldet ist
         btn_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +82,7 @@ public class EinstellungenActivity extends AppCompatActivity {
             }
         });
 
+        //Dieser Button leitet den Benutzer zur HilfeActivity weiter, wo er schnell die wichtigsten Sachen nachlesen kann
         btn_hilfe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +92,7 @@ public class EinstellungenActivity extends AppCompatActivity {
             }
         });
 
+        //Mit KLick auf diesen Button, loggt der Benutzer sich aus seinem Account aus und alle SharedPreferences werden auf Standard zurueckgesetzt
         btn_ausloggen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +109,11 @@ public class EinstellungenActivity extends AppCompatActivity {
             }
         });
 
+        /** Durch Nutzung des Loeschen Buttons, oeffnet sich ein popup Fenster in welchem der Benutzer aussuchen kann
+         *  ob er nur seinen haushalt oder sein ganzes Benutzerkonto loeschen moechte.
+         *  Bei der jeweiligen Auswahl, oeffnet sich ein neues Popup Fenster in welchem der Benutzer die
+         *  unwiderrufliche Entscheidung bestaetigen oder den Vorgang abbrechen kann
+         */
         btn_loeschen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,6 +211,12 @@ public class EinstellungenActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Wenn der Benutzer wuenscht sein Konto nicht laenger nutzen zu wollen, kann er es loeschen.
+     * Dies geht nur, wenn er keinem Haushalt mehr zugeordnet ist.
+     * Um sein Konto loeschen zu koennen, muss er sich also entweder erst aus allen Haushalten abmelden oder diese loeschen.
+     * Nach dem das Konto geloescht wurde, wird er auf den Loginbildschirm gebracht
+     */
     public void benutzerkontoLoeschen() {
         requestQueue2 = Volley.newRequestQueue(getApplicationContext());
 
@@ -250,6 +274,9 @@ public class EinstellungenActivity extends AppCompatActivity {
         requestQueue2.add(loeschenrequest2);
     }
 
+    /**
+     * Mit dieser Methode wird der Haushalt geloescht, in welchem der Benutzer gerade angemeldet ist.
+     */
     public void haushaltLoeschen() {
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 

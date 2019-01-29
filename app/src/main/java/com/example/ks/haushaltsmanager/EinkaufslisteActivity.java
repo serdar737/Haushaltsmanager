@@ -1,5 +1,6 @@
 package com.example.ks.haushaltsmanager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -45,17 +46,18 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
     EditText et_artikelname, et_menge, et_kaufhaeufigkeit;
 
-    FloatingActionButton fab_artikelhinzufuegen;
+    FloatingActionButton fab_artikelhinzufuegen, fab_abgehakt;
 
     int haushaltsid, menge;
 
     LinearLayout linearlayoutartikel;
 
-    RequestQueue requestQueue, requestQueue2;
+    RequestQueue requestQueue, requestQueue2, requestQueue3;
 
     String artikelname;
     String insertUrl = "http://10.0.2.2:3306/artikelzueinkaufsliste.php";
     String readUrl = "http://10.0.2.2:3306/zeigeeinkaufsliste.php";
+    String abhakenUrl = "http://10.0.2.2:3306/artikelhaushalthinzufuegen.php";
 
     TextView tv_haushaltsname;
 
@@ -71,8 +73,60 @@ public class EinkaufslisteActivity extends AppCompatActivity {
         tv_haushaltsname = findViewById(R.id.tv_haushalteinkauf);
         fab_artikelhinzufuegen = findViewById(R.id.fab_artikelhinzufuegen);
         linearlayoutartikel = findViewById(R.id.linearlayoutartikel);
+        fab_abgehakt = findViewById(R.id.fab_abhaken);
 
         leseEinkaufsliste();
+
+        fab_abgehakt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                for(int k=0;k<linearlayoutartikel.getChildCount();k++){
+                    View v = linearlayoutartikel.getChildAt(k);
+                    if(v instanceof CheckBox){
+                        if(((CheckBox)v).isChecked()){
+                            System.out.println("Abgehakt "+((CheckBox) v).getText());
+
+                            final String gekauft = "true";
+
+                            final String artikel = ((CheckBox) v).getText().toString();
+
+                            requestQueue3 = Volley.newRequestQueue(getApplicationContext());
+
+                            StringRequest hrequest = new StringRequest(Request.Method.POST, abhakenUrl, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            })
+                            {
+                                @Override
+                                protected Map<String, String> getParams() throws AuthFailureError {
+                                    Map <String, String> parameters = new HashMap<String, String>();
+                                    parameters.put("haushaltsid", ""+haushaltsid);
+                                    parameters.put("artikelname", artikel);
+                                    parameters.put("istgekauft", gekauft);
+
+                                    return parameters;
+                                }
+                            };
+
+                            //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+                            requestQueue3.add(hrequest);
+
+                            v.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }
+                finish();
+                startActivity(getIntent());
+            }
+        });
 
         //FloatingActionButton oeffnet ein PopupFenster zum hinzufuegen eines neuen Artikels
         fab_artikelhinzufuegen.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +176,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
     public void artikelCheckBoxNeu() {
         checkbox = new CheckBox(getApplicationContext());
         checkbox.setText(artikelname);
+
         linearlayoutartikel.addView(checkbox);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());

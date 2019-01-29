@@ -42,9 +42,10 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
     FloatingActionButton fab_zutathinzufuegen;
     int haushaltsid, benutzerid, rezeptidtemp, rezeptid, menge;
 
-    RequestQueue requestQueue, requestQueue2;
+    RequestQueue requestQueue, requestQueue2, requestQueue3;
     String insertUrl = "http://10.0.2.2:3306/updaterezept.php";
     String url = "http://10.0.2.2:3306/erstellezutat.php";
+    String starturl = "http://10.0.2.2:3306/rezeptansicht.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,66 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                 dialogrezepte.show();
             }
         });
+
+        requestQueue3 = Volley.newRequestQueue(getApplicationContext());
+
+        StringRequest arequest = new StringRequest(Request.Method.POST, starturl, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject obj = new JSONObject(response);
+                    JSONArray j_zutat = obj.getJSONArray("zutat");
+                    JSONArray j_menge = obj.getJSONArray("menge");
+                    JSONArray j_masseinheit = obj.getJSONArray("masseinheit");
+                    JSONArray j_beschreibung = obj.getJSONArray("beschreibung");
+
+                    for (int z = 0; z < j_zutat.length(); z++) {
+                        final JSONObject zutatobj = j_zutat.getJSONObject(z);
+                        final JSONObject mengeobj = j_menge.getJSONObject(z);
+                        final JSONObject masseinheitobj = j_masseinheit.getJSONObject(z);
+
+                        zutat = et_zutat.getText().toString();
+                        String temp_menge = et_menge.getText().toString();
+                        menge = Integer.parseInt(temp_menge);
+                        masseinheit = et_masseinheit.getText().toString();
+
+                        zutatHinzufuegen(zutat, menge, masseinheit);
+                    }
+
+                    final JSONObject beschreibungobj = j_beschreibung.getJSONObject(0);
+
+                    et_beschreibung.setText(beschreibungobj.getString("Beschreibung"));
+                    linearleayoutrezepterstellen.addView(et_beschreibung);
+
+                }
+                catch (JSONException e) {
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("ResponseError");
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("rezeptid", ""+rezeptid);
+
+                return parameters;
+            }
+        };
+
+        //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+        requestQueue3.add(arequest);
+
+
+
+
+
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 

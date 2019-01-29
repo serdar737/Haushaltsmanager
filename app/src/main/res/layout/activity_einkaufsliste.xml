@@ -57,4 +57,17 @@
             android:orientation="vertical" />
     </ScrollView>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_abhaken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fab_artikelhinzufuegen"
+        app:srcCompat="@android:drawable/checkbox_on_background" />
+
 </android.support.constraint.ConstraintLayout>

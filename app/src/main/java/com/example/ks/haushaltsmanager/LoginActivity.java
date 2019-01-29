@@ -113,6 +113,18 @@ public class LoginActivity extends AppCompatActivity {
                                         Intent intent = new Intent(LoginActivity.this, HauptmenueActivity.class);
                                         startActivity(intent);
                                     }
+                                    else if (haushalte.equals("fehler")) {
+
+                                        SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor spe = idspeicher.edit();
+                                        spe.putInt("ID", benutzerid);
+                                        spe.putString("Benutzername", benutzername);
+                                        spe.putString("Name", name);
+                                        spe.commit();
+
+                                        Intent intent = new Intent(LoginActivity.this, HaushaltBeitretenActivity.class);
+                                        startActivity(intent);
+                                    }
                                     else {
 
                                         SharedPreferences idspeicher = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);

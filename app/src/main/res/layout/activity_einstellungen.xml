@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837">
+        app:layout_constraintVertical_bias="1.0">
 
         <Button
             android:id="@+id/btn_haushaltwechseln"
@@ -35,14 +35,6 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:text="@string/haushaltinfo"
-            android:textAllCaps="false"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/btn_hilfeaufrufen"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:text="@string/hilfe"
             android:textAllCaps="false"
             android:textSize="24sp" />
 

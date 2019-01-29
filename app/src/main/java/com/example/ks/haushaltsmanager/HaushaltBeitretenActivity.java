@@ -28,7 +28,7 @@ import java.util.Objects;
 
 public class HaushaltBeitretenActivity extends AppCompatActivity {
 
-    Button btn_beitreten, btn_abbruch, btn_hilfe, btn_neuenhaushalt;
+    Button btn_beitreten, btn_abbruch, btn_neuenhaushalt;
     EditText et_haushaltsid, et_passwort;
     int nutzerid, haushaltsid;
 
@@ -44,7 +44,6 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
 
         btn_beitreten = findViewById(R.id.btn_beitreten);
         btn_abbruch = findViewById(R.id.btn_abbruch);
-        btn_hilfe = findViewById(R.id.btn_hilfe);
         btn_neuenhaushalt = findViewById(R.id.btn_neuenhaushalt);
         et_haushaltsid = findViewById(R.id.et_haushaltsid);
         et_passwort = findViewById(R.id.et_passwortlogin);
@@ -144,15 +143,6 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(HaushaltBeitretenActivity.this, HaushaltErstellenActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btn_hilfe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(HaushaltBeitretenActivity.this, HilfeActivity.class);
                 startActivity(intent);
             }
         });

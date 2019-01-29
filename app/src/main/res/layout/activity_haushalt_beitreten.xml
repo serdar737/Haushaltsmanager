@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".HaushaltBeitretenActivity">
 
-    <Button
-        android:id="@+id/btn_hilfe"
-        android:layout_width="72dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="159dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="159dp"
-        android:text="@string/hilfe"
-        android:textAllCaps="false"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_abbruch" />
-
     <TextView
         android:id="@+id/tv_haushaltbeitreten1"
         android:layout_width="wrap_content"

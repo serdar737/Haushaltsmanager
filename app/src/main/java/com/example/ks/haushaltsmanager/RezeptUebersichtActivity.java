@@ -31,7 +31,7 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
     LinearLayout linearlayoutrezepteuebersicht;
     FloatingActionButton fab_neuesrezept;
     Button btn_rezeptname;
-    int haushaltsid;
+    int haushaltsid, benutzerid;
 
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/zeigerezepte.php";
@@ -44,6 +44,7 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         haushaltsid = prefs.getInt("HaushaltsID", -1);
+        benutzerid = prefs.getInt("ID", -1);
 
         linearlayoutrezepteuebersicht = findViewById(R.id.linearlayoutrezepte);
         fab_neuesrezept = findViewById(R.id.fab_artikelhinzufuegen);
@@ -65,7 +66,7 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
                         final JSONObject id = rezeptids.getJSONObject(z);
 
                         btn_rezeptname = new Button(getApplicationContext());
-                        btn_rezeptname.setText(id.getString("ID")+" - "+rezept.getString("Name"));
+                        btn_rezeptname.setText(id.getInt("ID")+" - "+rezept.getString("Rezeptname"));
                         linearlayoutrezepteuebersicht.addView(btn_rezeptname);
 
                         btn_rezeptname.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +101,7 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map <String, String> parameters = new HashMap<String, String>();
                 parameters.put("haushaltsid", ""+haushaltsid);
+                parameters.put("benutzerid", ""+benutzerid);
 
                 return parameters;
             }

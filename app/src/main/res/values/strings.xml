@@ -65,4 +65,5 @@
     <string name="haushaltverlassenanweisung">Wenn du der letzte Nutzer dieses Haushalts bist, wird er geloescht.</string>
     <string name="abbrechen">Abbrechen</string>
     <string name="verlasse">Haushalt verlassen</string>
+    <string name="personenanzahl">Für wie viele Personen ist dein Rezept?</string>
 </resources>

@@ -176,6 +176,8 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
     public void rezeptloeschen() {
         requestQueue2 = Volley.newRequestQueue(getApplicationContext());
 
+        final int temp_rezeptid = rezeptid;
+
         StringRequest loeschenrequest = new StringRequest(Request.Method.POST, loeschenurl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -191,7 +193,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map <String, String> parameters = new HashMap<String, String>();
-                parameters.put("rezeptid", ""+rezeptid);
+                parameters.put("rezeptid", ""+temp_rezeptid);
 
                 return parameters;
             }

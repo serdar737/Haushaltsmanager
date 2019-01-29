@@ -74,7 +74,7 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
                             public void onClick(View view) {
                                 Intent intent = new Intent(RezeptUebersichtActivity.this, RezeptAnsichtActivity.class);
                                 try {
-                                    intent.putExtra("REZEPTNAME", rezept.getString("Name") );
+                                    intent.putExtra("REZEPTNAME", rezept.getString("Rezeptname") );
                                     intent.putExtra("REZEPTID", id.getInt("ID") );
                                 } catch (JSONException e) {
                                     e.printStackTrace();

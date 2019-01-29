@@ -27,19 +27,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class RezeptBearbeitenActivity extends AppCompatActivity {
 
-    EditText et_zutat, et_beschreibung, et_menge;
+    ArrayList<String> zutaten;
+    EditText et_zutat, et_beschreibung, et_menge, et_masseinheit;
     String rezeptnametemp;
     Button btn_rezepthinzufuegen, btn_zutathinzufuegen;
     LinearLayout linearleayoutrezepterstellen;
-    String zutat;
+    String zutat, masseinheit;
     FloatingActionButton fab_zutathinzufuegen;
-    int haushaltsid, benutzerid, personentemp, rezeptid;
+    int haushaltsid, benutzerid, personentemp, rezeptid, menge;
 
     RequestQueue requestQueue, requestQueue2;
     String insertUrl = "http://10.0.2.2:3306/erstellerezept.php";
@@ -67,6 +69,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
         fab_zutathinzufuegen = findViewById(R.id.fab_zutathinzufuegen);
         et_beschreibung = findViewById(R.id.et_beschreibung);
 
+        zutaten = new ArrayList<String>();
 
         fab_zutathinzufuegen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +80,12 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
 
                 et_zutat = popupviewrezepte.findViewById(R.id.et_zutat);
                 et_menge = popupviewrezepte.findViewById(R.id.et_zutatmenge);
+                et_masseinheit = popupviewrezepte.findViewById(R.id.et_masseinheit);
                 btn_zutathinzufuegen = popupviewrezepte.findViewById(R.id.btn_zutathinzufuegenpopup);
+
+                zutat = et_zutat.getText().toString();
+                menge = Integer.parseInt(et_menge.getText().toString());
+                masseinheit = et_masseinheit.getText().toString();
 
                 popupbuilder2.setView(popupviewrezepte);
                 final AlertDialog dialogrezepte = popupbuilder2.create();
@@ -125,8 +133,12 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                             }
                             else {
                                 rezeptid = obj_id.getInt("ID");
-                                System.out.println(rezeptid);
-                                //zutatZuRezeptHinzufugen();
+
+                                for (int i = 0; zutaten.size() > 0;) {
+
+                                    zutat
+                                    zutatZuRezeptHinzufugen();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -165,51 +177,68 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
 
         requestQueue2 = Volley.newRequestQueue(getApplicationContext());
 
-        StringRequest srequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+        int count = linearleayoutrezepterstellen.getChildCount();
 
-                try {
-                    JSONObject obj = new JSONObject(response);
-                    boolean sicherheit = obj.getBoolean("sicherheit");
+        for(int i=0; i<count; i++) {
+            linearleayoutrezepterstellen.getChildAt(i);
 
-                    if (sicherheit == false) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Rezept konnte nicht erstellt werden. Bitte versuche es nochmal.", Toast.LENGTH_SHORT);
-                        toast.show();
+            StringRequest srequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONObject objzutat = new JSONObject(response);
+                        boolean erfolgreich = objzutat.getBoolean("erfolg");
+
+                        if (erfolgreich == false) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Rezept konnte nicht erstellt werden. Bitte versuche es nochmal.", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                        else {
+
+                            Toast toast = Toast.makeText(getApplicationContext(), "Rezept erstellt!.", Toast.LENGTH_SHORT);
+                            toast.show();
+                            Intent intent = new Intent(RezeptBearbeitenActivity.this, RezeptUebersichtActivity.class);
+                            startActivity(intent);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    else {
 
-                        Toast toast = Toast.makeText(getApplicationContext(), "Rezept erstellt!.", Toast.LENGTH_SHORT);
-                        toast.show();
-                        Intent intent = new Intent(RezeptBearbeitenActivity.this, RezeptUebersichtActivity.class);
-                        startActivity(intent);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parameters = new HashMap<String, String>();
+                    parameters.put("rezeptid", "" +rezeptid);
+                    parameters.put("zutat", zutat);
+                    parameters.put("menge", "" +menge);
+                    parameters.put("masseinheit", masseinheit);
+
+                    return parameters;
                 }
 
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+            };
 
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> parameters = new HashMap<String, String>();
-                //parameters.put("rezeptid", "" +rezeptid);
+            requestQueue2.add(srequest);
+        }
 
-                return parameters;
-            }
-
-        };
-
-        requestQueue2.add(srequest);
     }
 
     public void zutatHinzufuegen() {
 
+        TextView tv_zutat = new TextView(getApplicationContext());
+        tv_zutat.setText(zutat);
+        linearleayoutrezepterstellen.addView(tv_zutat);
+
+        zutaten.add(zutat);
+        zutaten.add(""+menge);
+        zutaten.add(masseinheit);
     }
 
 }

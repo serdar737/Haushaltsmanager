@@ -29,6 +29,15 @@
         android:inputType="textPersonName"
         android:textAlignment="center" />
 
+    <EditText
+        android:id="@+id/et_masseinheit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/masseinheit"
+        android:inputType="textPersonName"
+        android:textAlignment="center" />
+
     <Button
         android:id="@+id/btn_zutathinzufuegenpopup"
         android:layout_width="match_parent"

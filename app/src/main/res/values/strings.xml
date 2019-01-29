@@ -60,4 +60,5 @@
     <string name="benutzerloeschen">Möchtest du wirklich dein Benutzerkonto löschen?</string>
     <string name="haushaltinfo">Haushaltsinformationen</string>
     <string name="verlassen">Haushalt verlassen</string>
+    <string name="mitglieder">Folgende Nutzer sind Mitglied in diesem Haushalt:</string>
 </resources>

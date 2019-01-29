@@ -58,6 +58,8 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
             rezeptid = extras.getInt("REZEPTID");
         }
 
+        System.out.println(rezeptid);
+
         tv_rezeptname = findViewById(R.id.tv_rezeptname_ru);
         ll_beschreibung = findViewById(R.id.ll_rezeptzutaten);
         ll_zutaten = findViewById(R.id.ll_rezeptbeschreibung);
@@ -190,7 +192,6 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map <String, String> parameters = new HashMap<String, String>();
                 parameters.put("rezeptid", ""+rezeptid);
-
 
                 return parameters;
             }

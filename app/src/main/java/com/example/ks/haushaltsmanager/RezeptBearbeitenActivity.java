@@ -81,10 +81,6 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                 et_masseinheit = popupviewrezepte.findViewById(R.id.et_masseinheit);
                 btn_zutathinzufuegen = popupviewrezepte.findViewById(R.id.btn_zutathinzufuegenpopup);
 
-                zutat = et_zutat.getText().toString();
-                //menge = Integer.parseInt(et_menge.getText().toString());
-                masseinheit = et_masseinheit.getText().toString();
-
                 popupbuilder2.setView(popupviewrezepte);
                 final AlertDialog dialogrezepte = popupbuilder2.create();
 
@@ -92,7 +88,12 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        zutatHinzufuegen();
+                        zutat = et_zutat.getText().toString();
+                        String temp_menge = et_menge.getText().toString();
+                        menge = Integer.parseInt(temp_menge);
+                        masseinheit = et_masseinheit.getText().toString();
+
+                        zutatHinzufuegen(zutat, menge, masseinheit);
                         zutatZuRezept();
                         dialogrezepte.hide();
                     }
@@ -168,10 +169,10 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
     }
 
 
-    public void zutatHinzufuegen() {
+    public void zutatHinzufuegen(String z, int m, String ma) {
 
         TextView tv_zutat = new TextView(getApplicationContext());
-        tv_zutat.setText(zutat+" - "+menge+" "+masseinheit);
+        tv_zutat.setText(z+" - "+m+" "+ma);
         linearleayoutrezepterstellen.addView(tv_zutat);
 
     }
@@ -179,6 +180,8 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
     public void zutatZuRezept() {
 
         requestQueue2 = Volley.newRequestQueue(getApplicationContext());
+
+        final int rezeptid = rezeptidtemp;
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

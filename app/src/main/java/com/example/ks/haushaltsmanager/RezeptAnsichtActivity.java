@@ -32,7 +32,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
 
     Animation fab_klein_oeffnen, fab_klein_schliessen;
     boolean menueoffen = false;
-    TextView tv_rezeptname, tv_zutat;
+    TextView tv_rezeptname, tv_zutat, tv_beschreibung;
     LinearLayout ll_zutaten, ll_beschreibung;
     RequestQueue requestQueue, requestQueue2;
     String url = "http://10.0.2.2:3306/rezeptansicht.php";
@@ -85,6 +85,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                     JSONArray j_zutat = obj.getJSONArray("zutat");
                     JSONArray j_menge = obj.getJSONArray("menge");
                     JSONArray j_masseinheit = obj.getJSONArray("masseinheit");
+                    JSONArray j_beschreibung = obj.getJSONArray("beschreibung");
 
                     for (int z = 0; z < j_zutat.length(); z++) {
                         final JSONObject zutatobj = j_zutat.getJSONObject(z);
@@ -95,6 +96,12 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                         tv_zutat.setText(zutatobj.getString("Zutat")+" - "+mengeobj.getInt("Menge")+" "+masseinheitobj.getString("Masseinheit"));
                         ll_zutaten.addView(tv_zutat);
                     }
+
+                    final JSONObject beschreibungobj = j_beschreibung.getJSONObject(0);
+
+                    tv_beschreibung = new TextView(getApplicationContext());
+                    tv_beschreibung.setText(beschreibungobj.getString("Beschreibung"));
+                    ll_beschreibung.addView(tv_beschreibung);
 
                 }
                 catch (JSONException e) {

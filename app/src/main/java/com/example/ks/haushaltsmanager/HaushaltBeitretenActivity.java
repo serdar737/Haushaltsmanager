@@ -52,6 +52,7 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         nutzerid = prefs.getInt("ID", -1);
+        haushaltsid = prefs.getInt("HaushhaltsID", -1);
 
         System.out.println("Benutzerid: "+nutzerid);
 
@@ -163,6 +164,15 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (haushaltsid == -1) {
+
+                    Intent intent = new Intent(HaushaltBeitretenActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(HaushaltBeitretenActivity.this, HauptmenueActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

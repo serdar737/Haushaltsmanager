@@ -34,17 +34,17 @@ import java.util.Objects;
 
 public class RezeptBearbeitenActivity extends AppCompatActivity {
 
-    ArrayList<String> zutaten;
     EditText et_zutat, et_beschreibung, et_menge, et_masseinheit;
     String rezeptnametemp;
     Button btn_rezepthinzufuegen, btn_zutathinzufuegen;
     LinearLayout linearleayoutrezepterstellen;
     String zutat, masseinheit;
     FloatingActionButton fab_zutathinzufuegen;
-    int haushaltsid, benutzerid, personentemp, rezeptid, menge;
+    int haushaltsid, benutzerid, rezeptidtemp, rezeptid, menge;
 
     RequestQueue requestQueue, requestQueue2;
-    String insertUrl = "http://10.0.2.2:3306/erstellerezept.php";
+    String insertUrl = "http://10.0.2.2:3306/updaterezept.php";
+    String url = "http://10.0.2.2:3306/erstellezutat.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +61,13 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             rezeptnametemp = extras.getString("REZEPTNAME");
-            personentemp = extras.getInt("PERSONEN");
+            rezeptidtemp = extras.getInt("REZEPTID");
         }
 
         btn_rezepthinzufuegen = findViewById(R.id.btn_rezepterstellen);
         linearleayoutrezepterstellen = findViewById(R.id.linearlayoutrezepterstellen);
         fab_zutathinzufuegen = findViewById(R.id.fab_zutathinzufuegen);
         et_beschreibung = findViewById(R.id.et_beschreibung);
-
-        zutaten = new ArrayList<String>();
 
         fab_zutathinzufuegen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +82,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                 btn_zutathinzufuegen = popupviewrezepte.findViewById(R.id.btn_zutathinzufuegenpopup);
 
                 zutat = et_zutat.getText().toString();
-                menge = Integer.parseInt(et_menge.getText().toString());
+                //menge = Integer.parseInt(et_menge.getText().toString());
                 masseinheit = et_masseinheit.getText().toString();
 
                 popupbuilder2.setView(popupviewrezepte);
@@ -95,6 +93,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                     public void onClick(View view) {
 
                         zutatHinzufuegen();
+                        zutatZuRezept();
                         dialogrezepte.hide();
                     }
                 });
@@ -110,36 +109,31 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 final String beschreibung = et_beschreibung.getText().toString();
-                final String rezeptname = rezeptnametemp;
-                final int personen = personentemp;
+                final int rezeptid = rezeptidtemp;
 
                 StringRequest srequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
+                        JSONObject obj = null;
                         try {
-                            JSONObject obj = new JSONObject(response.toString());
-                            JSONArray id = obj.getJSONArray("array_id");
-                            JSONArray sicher = obj.getJSONArray("array_sicherheit");
+                            obj = new JSONObject(response.toString());
 
-                            final JSONObject obj_sicherheit = sicher.getJSONObject(0);
-                            final JSONObject obj_id = id.getJSONObject(0);
-
-                            boolean sicherheit = obj_sicherheit.getBoolean("sicherheit");
+                            boolean sicherheit = obj.getBoolean("erstellt");
 
                             if (sicherheit == false) {
-                                Toast toast = Toast.makeText(getApplicationContext(), "Rezept konnte nicht erstellt werden. Bitte versuche es nochmal.", Toast.LENGTH_SHORT);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Rezept konnte nicht bearbeitet werden. Bitte versuche es nochmal.", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
                             else {
-                                rezeptid = obj_id.getInt("ID");
+                                Toast toast = Toast.makeText(getApplicationContext(), "Rezept erfolgreich bearbeitet!", Toast.LENGTH_SHORT);
+                                toast.show();
 
-                                for (int i = 0; zutaten.size() > 0;) {
-
-                                    zutat
-                                    zutatZuRezeptHinzufugen();
-                                }
+                                Intent intent = new Intent(RezeptBearbeitenActivity.this, RezeptUebersichtActivity.class);
+                                startActivity(intent);
                             }
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -154,12 +148,8 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> parameters = new HashMap<String, String>();
-                        parameters.put("haushaltsid", ""+haushaltsid);
-                        parameters.put("benutzerid", ""+benutzerid);
-                        parameters.put("rezeptname", rezeptname);
-                        parameters.put("beschreibung", beschreibung);
-                        parameters.put("personen", ""+personen );
-
+                        parameters.put("rezeptid", ""+rezeptid);
+                        parameters.put("beschreibung", ""+beschreibung);
 
                         return parameters;
                     }
@@ -168,77 +158,54 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                 //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
                 requestQueue.add(srequest);
 
+                Intent intent = new Intent(RezeptBearbeitenActivity.this, RezeptUebersichtActivity.class);
+                startActivity(intent);
             }
+
         });
 
-    }
-
-    public void zutatZuRezeptHinzufugen() {
-
-        requestQueue2 = Volley.newRequestQueue(getApplicationContext());
-
-        int count = linearleayoutrezepterstellen.getChildCount();
-
-        for(int i=0; i<count; i++) {
-            linearleayoutrezepterstellen.getChildAt(i);
-
-            StringRequest srequest = new StringRequest(Request.Method.POST, insertUrl, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-
-                    try {
-                        JSONObject objzutat = new JSONObject(response);
-                        boolean erfolgreich = objzutat.getBoolean("erfolg");
-
-                        if (erfolgreich == false) {
-                            Toast toast = Toast.makeText(getApplicationContext(), "Rezept konnte nicht erstellt werden. Bitte versuche es nochmal.", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                        else {
-
-                            Toast toast = Toast.makeText(getApplicationContext(), "Rezept erstellt!.", Toast.LENGTH_SHORT);
-                            toast.show();
-                            Intent intent = new Intent(RezeptBearbeitenActivity.this, RezeptUebersichtActivity.class);
-                            startActivity(intent);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parameters = new HashMap<String, String>();
-                    parameters.put("rezeptid", "" +rezeptid);
-                    parameters.put("zutat", zutat);
-                    parameters.put("menge", "" +menge);
-                    parameters.put("masseinheit", masseinheit);
-
-                    return parameters;
-                }
-
-            };
-
-            requestQueue2.add(srequest);
-        }
 
     }
+
 
     public void zutatHinzufuegen() {
 
         TextView tv_zutat = new TextView(getApplicationContext());
-        tv_zutat.setText(zutat);
+        tv_zutat.setText(zutat+" - "+menge+" "+masseinheit);
         linearleayoutrezepterstellen.addView(tv_zutat);
 
-        zutaten.add(zutat);
-        zutaten.add(""+menge);
-        zutaten.add(masseinheit);
+    }
+
+    public void zutatZuRezept() {
+
+        requestQueue2 = Volley.newRequestQueue(getApplicationContext());
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("ResponseError");
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("rezeptid", ""+rezeptid);
+                parameters.put("zutat", zutat);
+                parameters.put("menge", ""+menge);
+                parameters.put("masseinheit", masseinheit);
+
+                return parameters;
+            }
+        };
+
+        //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
+        requestQueue2.add(request);
     }
 
 }

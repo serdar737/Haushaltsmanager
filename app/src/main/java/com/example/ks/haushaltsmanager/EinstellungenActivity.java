@@ -35,8 +35,6 @@ public class EinstellungenActivity extends AppCompatActivity {
 
     Button btn_haushaltwechseln, btn_hilfe, btn_ausloggen, btn_loeschen, btn_benutzerloeschen, btn_haushaltloeschen, btn_ja, btn_nein, btn_ja2, btn_nein2, btn_info;
 
-    FloatingActionButton fab_zurueck;
-
     int haushaltsid, benutzerid;
 
     RequestQueue requestQueue, requestQueue2;
@@ -65,15 +63,6 @@ public class EinstellungenActivity extends AppCompatActivity {
         btn_ausloggen = findViewById(R.id.btn_ausloggen);
         btn_loeschen = findViewById(R.id.btn_loeschen);
         btn_info = findViewById(R.id.btn_haushaltsinfo);
-        fab_zurueck = findViewById(R.id.fab_zurueck_einst);
-
-        fab_zurueck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(EinstellungenActivity.this, HauptmenueActivity.class);
-                startActivity(intent);
-            }
-        });
 
         //Dieser Button leitet den Benutzer in die Uebersicht seiner Haushalte weiter
         btn_haushaltwechseln.setOnClickListener(new View.OnClickListener() {

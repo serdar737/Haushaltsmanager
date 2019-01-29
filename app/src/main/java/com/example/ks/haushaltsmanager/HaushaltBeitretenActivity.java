@@ -35,7 +35,7 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
 
     RequestQueue requestQueue;
     String insertUrl = "http://10.0.2.2:3306/haushaltbeitreten.php";
-    String haushaltname;
+    String haushaltsname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +52,7 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         nutzerid = prefs.getInt("ID", -1);
-        haushaltsid = prefs.getInt("HaushhaltsID", -1);
-
-        System.out.println("Benutzerid: "+nutzerid);
+        haushaltsid = prefs.getInt("HaushaltsID", -1);
 
         btn_beitreten.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +69,7 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
                 else {
                     String temp_haushaltsid = et_haushaltsid.getText().toString();
 
-                    haushaltsid = Integer.parseInt(temp_haushaltsid);
+                    haushaltsname = temp_haushaltsid;
 
                     requestQueue = Volley.newRequestQueue(getApplicationContext());
 
@@ -94,12 +92,12 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
                                     //Wenn die Anmeldedaten korrekt waren, liest das JsonObject den Haushaltsnamen aus
                                     JSONObject haushaltsname_json = login.getJSONObject(1);
 
-                                    haushaltname = haushaltsname_json.getString("Haushaltsname");
+                                    haushaltsid = haushaltsname_json.getInt("ID");
 
                                     SharedPreferences prefs = getSharedPreferences("sharedprefs", Context.MODE_PRIVATE);
                                     SharedPreferences.Editor spe = prefs.edit();
                                     spe.putInt("HaushaltsID", haushaltsid);
-                                    spe.putString("Haushaltsname", haushaltname);
+                                    spe.putString("Haushaltsname", haushaltsname);
                                     spe.apply();
 
                                     Intent intent = new Intent(HaushaltBeitretenActivity.this, HauptmenueActivity.class);
@@ -126,7 +124,7 @@ public class HaushaltBeitretenActivity extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> parameters = new HashMap<String, String>();
-                            parameters.put("haushaltsid", ""+haushaltsid);
+                            parameters.put("haushaltsname", haushaltsname);
                             parameters.put("benutzerid", ""+nutzerid);
                             parameters.put("passwort", et_passwort.getText().toString());
 

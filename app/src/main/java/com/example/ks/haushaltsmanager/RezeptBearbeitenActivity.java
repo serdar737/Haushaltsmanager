@@ -110,17 +110,21 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                     public void onResponse(String response) {
 
                         try {
-                            JSONObject obj = new JSONObject(response);
+                            JSONObject obj = new JSONObject(response.toString());
+                            JSONArray id = obj.getJSONArray("array_id");
+                            JSONArray sicher = obj.getJSONArray("array_sicherheit");
 
-                            boolean sicherheit = obj.getBoolean("sicherheit");
+                            final JSONObject obj_sicherheit = sicher.getJSONObject(0);
+                            final JSONObject obj_id = id.getJSONObject(0);
+
+                            boolean sicherheit = obj_sicherheit.getBoolean("sicherheit");
 
                             if (sicherheit == false) {
                                 Toast toast = Toast.makeText(getApplicationContext(), "Rezept konnte nicht erstellt werden. Bitte versuche es nochmal.", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
                             else {
-
-                                rezeptid = obj.getInt("ID");
+                                rezeptid = obj_id.getInt("ID");
                                 System.out.println(rezeptid);
                                 //zutatZuRezeptHinzufugen();
                             }
@@ -132,7 +136,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        System.out.println("ResponseError");
                     }
                 }) {
                     @Override

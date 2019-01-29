@@ -67,4 +67,6 @@
     <string name="verlasse">Haushalt verlassen</string>
     <string name="personenanzahl">Für wie viele Personen ist dein Rezept?</string>
     <string name="masseinheit">Maßeinheit</string>
+    <string name="verfallsdatum">Verfallsdatum</string>
+    <string name="bearbeite">Bearbeite</string>
 </resources>

@@ -123,10 +123,10 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                         final JSONObject mengeobj = j_menge.getJSONObject(z);
                         final JSONObject masseinheitobj = j_masseinheit.getJSONObject(z);
 
-                        zutat = et_zutat.getText().toString();
+                        zutat = zutatobj.getString("Zutat");
                         String temp_menge = et_menge.getText().toString();
-                        menge = Integer.parseInt(temp_menge);
-                        masseinheit = et_masseinheit.getText().toString();
+                        menge = mengeobj.getInt("Menge");
+                        masseinheit = masseinheitobj.getString("Masseinheit");
 
                         zutatHinzufuegen(zutat, menge, masseinheit);
                     }
@@ -158,10 +158,6 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
 
         //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
         requestQueue3.add(arequest);
-
-
-
-
 
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());

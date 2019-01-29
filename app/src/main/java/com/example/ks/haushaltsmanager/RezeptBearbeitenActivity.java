@@ -211,4 +211,9 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
         requestQueue2.add(request);
     }
 
+    @Override
+    public void onBackPressed() {
+        //Nichts machen wenn die Zurueck taste des handys benutzt wird
+    }
+
 }

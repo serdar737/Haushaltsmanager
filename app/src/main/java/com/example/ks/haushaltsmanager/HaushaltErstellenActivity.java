@@ -134,4 +134,9 @@ public class HaushaltErstellenActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        //Nichts machen wenn die Zurueck taste des handys benutzt wird
+    }
 }

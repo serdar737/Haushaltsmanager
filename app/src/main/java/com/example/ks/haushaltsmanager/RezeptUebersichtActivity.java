@@ -118,5 +118,12 @@ public class RezeptUebersichtActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(RezeptUebersichtActivity.this, HauptmenueActivity.class);
+        startActivity(intent);
     }
 }

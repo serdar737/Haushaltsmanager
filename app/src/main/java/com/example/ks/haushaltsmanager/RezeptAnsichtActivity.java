@@ -82,14 +82,17 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                 try {
 
                     JSONObject obj = new JSONObject(response);
-                    JSONArray rezept = obj.getJSONArray("rezept");
+                    JSONArray j_zutat = obj.getJSONArray("zutat");
+                    JSONArray j_menge = obj.getJSONArray("menge");
+                    JSONArray j_masseinheit = obj.getJSONArray("masseinheit");
 
-                    for (int z = 0; z < rezept.length(); z++) {
-                        final JSONObject zutatobj = rezept.getJSONObject(z);
+                    for (int z = 0; z < j_zutat.length(); z++) {
+                        final JSONObject zutatobj = j_zutat.getJSONObject(z);
+                        final JSONObject mengeobj = j_menge.getJSONObject(z);
+                        final JSONObject masseinheitobj = j_masseinheit.getJSONObject(z);
 
                         tv_zutat = new TextView(getApplicationContext());
-                        tv_zutat.setText(zutatobj.getString("Beschreibung"));
-                        zahl++;
+                        tv_zutat.setText(zutatobj.getString("Zutat")+" - "+mengeobj.getInt("Menge")+" "+masseinheitobj.getString("Masseinheit"));
                         ll_zutaten.addView(tv_zutat);
                     }
 
@@ -109,8 +112,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map <String, String> parameters = new HashMap<String, String>();
-                parameters.put("haushaltsid", ""+haushaltsid);
-                parameters.put("rezeptname", rezeptname);
+                parameters.put("rezeptid", ""+rezeptid);
 
                 return parameters;
             }
@@ -153,7 +155,6 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
     }
 
@@ -202,6 +203,12 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         //fuegt die Werte der RequestQueue zu, sodass diese in die php Datei uebergeben werden koennen
         requestQueue.add(loeschenrequest);
 
+        Intent intent = new Intent(RezeptAnsichtActivity.this, RezeptUebersichtActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
         Intent intent = new Intent(RezeptAnsichtActivity.this, RezeptUebersichtActivity.class);
         startActivity(intent);
     }

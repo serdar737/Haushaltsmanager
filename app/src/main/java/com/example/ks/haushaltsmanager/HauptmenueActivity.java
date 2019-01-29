@@ -76,4 +76,9 @@ public class HauptmenueActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+        //Im Hauptmenue soll die App nichts machen, wenn der Zurueck Knopf des handys gedrueckt wird
+    }
 }

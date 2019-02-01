@@ -23,11 +23,14 @@
     <ScrollView
         android:id="@+id/sv_zutaten"
         android:layout_width="395dp"
-        android:layout_height="201dp"
+        android:layout_height="182dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/sv_beschreibung"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_rezeptname_ru">
 
@@ -41,9 +44,9 @@
     <ScrollView
         android:id="@+id/sv_beschreibung"
         android:layout_width="395dp"
-        android:layout_height="221dp"
+        android:layout_height="209dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="9dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -113,5 +116,48 @@
         app:layout_constraintTop_toBottomOf="@+id/sv_beschreibung"
         app:pressedTranslationZ="12dp"
         app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <EditText
+        android:id="@+id/et_personenanzahlrezept"
+        android:layout_width="79dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="9dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/sv_zutaten"
+        app:layout_constraintStart_toEndOf="@+id/tv_personen"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rezeptname_ru" />
+
+    <TextView
+        android:id="@+id/tv_personen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="53dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/personen"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/sv_zutaten"
+        app:layout_constraintEnd_toStartOf="@+id/et_personenanzahlrezept"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="12dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/sv_zutaten"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@android:drawable/ic_popup_sync" />
 
 </android.support.constraint.ConstraintLayout>

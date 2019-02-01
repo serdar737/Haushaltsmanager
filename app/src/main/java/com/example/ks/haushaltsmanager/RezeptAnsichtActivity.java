@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,7 +24,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -38,7 +42,8 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
     String loeschenurl = "http://10.0.2.2:3306/loescherezept.php";
     String rezeptname;
     int haushaltsid, zahl, rezeptid;
-    FloatingActionButton fab_loeschen, fab_bearbeiten, fab_menue;
+    FloatingActionButton fab_loeschen, fab_bearbeiten, fab_menue, fab_refresh;
+    EditText et_personenanzahl;
 
 
     @Override
@@ -65,6 +70,8 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         fab_bearbeiten = findViewById(R.id.fab_rezeptbearbeiten);
         fab_loeschen = findViewById(R.id.fab_rezeptloeschen);
         fab_menue = findViewById(R.id.fab_rezeptmenue);
+        fab_refresh = findViewById(R.id.fab_refresh);
+        et_personenanzahl = findViewById(R.id.et_personenanzahlrezept);
 
         //Die Animation Resource Files der Animationen fuer die FABs den Animationsvariabeln zuweisen
         fab_klein_oeffnen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_klein_oeffnen);
@@ -74,6 +81,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
+        //holt sich zum passenden Rezept mithilfe der rezeptid welche durch die Intents uebergeben wurde, die Informationen zum Rezept
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -85,6 +93,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                     JSONArray j_menge = obj.getJSONArray("menge");
                     JSONArray j_masseinheit = obj.getJSONArray("masseinheit");
                     JSONArray j_beschreibung = obj.getJSONArray("beschreibung");
+                    JSONArray j_personen = obj.getJSONArray("personen");
 
                     for (int z = 0; z < j_zutat.length(); z++) {
                         final JSONObject zutatobj = j_zutat.getJSONObject(z);
@@ -92,7 +101,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                         final JSONObject masseinheitobj = j_masseinheit.getJSONObject(z);
 
                         tv_zutat = new TextView(getApplicationContext());
-                        tv_zutat.setText(zutatobj.getString("Zutat")+" - "+mengeobj.getInt("Menge")+" "+masseinheitobj.getString("Masseinheit"));
+                        tv_zutat.setText(zutatobj.getString("Zutat")+", "+mengeobj.getInt("Menge")+" "+masseinheitobj.getString("Masseinheit"));
                         ll_zutaten.addView(tv_zutat);
                     }
 
@@ -101,6 +110,11 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                     tv_beschreibung = new TextView(getApplicationContext());
                     tv_beschreibung.setText(beschreibungobj.getString("Beschreibung"));
                     ll_beschreibung.addView(tv_beschreibung);
+
+                    final JSONObject personenobj = j_personen.getJSONObject(0);
+                    //et_personenanzahl.setText(personenobj.getInt("Personenanzahl"));
+                    zahl = personenobj.getInt("Personenanzahl");
+                    System.out.println("Zahl: "+zahl);
 
                 }
                 catch (JSONException e) {
@@ -125,6 +139,51 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         };
 
         requestQueue.add(request);
+
+        //Button welcher die Personenanzahl aus dem EditText nimmt und die Mengen darauf umrechnet
+        fab_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                String personentemp = et_personenanzahl.getText().toString();
+                int personen = Integer.parseInt(personentemp);
+
+                for (int k = 0; k < ll_zutaten.getChildCount(); k++) {
+                    View v = ll_zutaten.getChildAt(k);
+                    if (v instanceof TextView) {
+
+                        String artikelsplit = ((TextView) v).getText().toString();
+
+                        String[] parts = artikelsplit.split(", ");
+
+                        String mengetemp1 = parts[1];
+
+                        String[] parts2 = mengetemp1.split(" ");
+
+                        String mengetemp = parts2[0];
+
+                        float menge = Float.parseFloat(mengetemp);
+                        System.out.println("Menge float: "+menge);
+                        System.out.println("Zahl: "+zahl);
+
+                        float rechne = menge /zahl;
+                        System.out.println("Rechne: "+rechne);
+                        System.out.println("Zahl: "+zahl);
+
+                        float ergebnis = rechne * personen;
+                        System.out.println("Ergebnus: "+ergebnis);
+                        System.out.println("Zahl: "+zahl);
+
+                        zahl = personen;
+
+                        ((TextView) v).setText(parts[0] + ", " + ergebnis + " " + parts2[1]);
+
+
+                    }
+                }
+            }
+        });
 
 
         //OnClickListener fuer den Button welcher ein kleines Menue oeffnet, welches aus zwei weiteren FABs besteht

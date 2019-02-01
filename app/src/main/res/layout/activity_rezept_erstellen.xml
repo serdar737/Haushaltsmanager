@@ -51,7 +51,7 @@
 
     <EditText
         android:id="@+id/et_personenanzahl"
-        android:layout_width="133dp"
+        android:layout_width="81dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="105dp"
         android:layout_marginTop="11dp"
@@ -59,6 +59,7 @@
         android:layout_marginBottom="88dp"
         android:ems="10"
         android:inputType="number"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/btn_rezeptnameweiter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

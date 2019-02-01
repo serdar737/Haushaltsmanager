@@ -69,4 +69,5 @@
     <string name="masseinheit">Maßeinheit</string>
     <string name="verfallsdatum">Verfallsdatum</string>
     <string name="bearbeite">Bearbeite</string>
+    <string name="personen">Personenanzahl:</string>
 </resources>

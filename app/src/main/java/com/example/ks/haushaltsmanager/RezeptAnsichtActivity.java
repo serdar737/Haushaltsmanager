@@ -175,13 +175,12 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                         System.out.println("Ergebnus: "+ergebnis);
                         System.out.println("Zahl: "+zahl);
 
-                        zahl = personen;
 
                         ((TextView) v).setText(parts[0] + ", " + ergebnis + " " + parts2[1]);
 
-
                     }
                 }
+                zahl = personen;
             }
         });
 

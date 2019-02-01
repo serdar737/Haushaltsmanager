@@ -43,7 +43,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
     CheckBox checkbox;
 
-    EditText et_artikelname, et_menge, et_kaufhaeufigkeit;
+    EditText et_artikelname, et_menge, et_kaufhaeufigkeit, et_masseinheit;
 
     FloatingActionButton fab_artikelhinzufuegen, fab_abgehakt;
 
@@ -88,7 +88,11 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
                             final String gekauft = "true";
 
-                            final String artikel = ((CheckBox) v).getText().toString();
+                            String artikelsplit = ((CheckBox) v).getText().toString();
+
+                            String [] parts = artikelsplit.split(",");
+
+                            final String artikel = parts[0];
 
                             requestQueue3 = Volley.newRequestQueue(getApplicationContext());
 
@@ -137,6 +141,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                 btn_weiter = popupview.findViewById(R.id.btn_weiter_artikel);
                 et_artikelname = popupview.findViewById(R.id.et_artikelname);
                 et_menge = popupview.findViewById(R.id.et_menge);
+                et_masseinheit = popupview.findViewById(R.id.et_masseinheitliste);
                 et_kaufhaeufigkeit = popupview.findViewById(R.id.et_kaufhaeufigkeit);
 
                 popupbuilder.setView(popupview);
@@ -148,6 +153,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
                         //Eine Menge muss mit eingegeben werden, solange dies nicht der Fall ist, kann kein neuer Artikel hinzugefuegt werden
                         String tempmenge = et_menge.getText().toString();
+                        String masseinheit = et_masseinheit.getText().toString();
 
                         if (tempmenge.equals("")) {
                             Toast toast = Toast.makeText(getApplicationContext(), "Bitte Menge angeben", Toast.LENGTH_SHORT);
@@ -156,7 +162,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                         else {
                             artikelname = et_artikelname.getText().toString();
                             menge = Integer.parseInt(tempmenge);
-                            artikelCheckBoxNeu();
+                            artikelCheckBoxNeu(menge, masseinheit);
                             dialog.hide();
                         }
                     }
@@ -172,9 +178,14 @@ public class EinkaufslisteActivity extends AppCompatActivity {
      * Die Methode artikelCheckBoxNeu erstellt mit der Eingabe des Artikelnamens eine neue Checkbox und fuegt diese
      * dem LinearLayout dynamisch hinzu
      */
-    public void artikelCheckBoxNeu() {
+    public void artikelCheckBoxNeu(int mengez, String masseinheitz) {
         checkbox = new CheckBox(getApplicationContext());
-        checkbox.setText(artikelname);
+        checkbox.setText(artikelname+", "+mengez+" "+masseinheitz);
+
+        final String artikel = artikelname;
+        final int mengey = mengez;
+        final String masseinheity = masseinheitz;
+        final int haushalt = haushaltsid;
 
         linearlayoutartikel.addView(checkbox);
 
@@ -195,9 +206,10 @@ public class EinkaufslisteActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map <String, String> parameters = new HashMap<String, String>();
-                parameters.put("haushaltsid", ""+haushaltsid);
-                parameters.put("artikelname", artikelname);
-                parameters.put("menge", ""+menge);
+                parameters.put("haushaltsid", ""+haushalt);
+                parameters.put("artikelname", artikel);
+                parameters.put("menge", ""+mengey);
+                parameters.put("masseinheit", ""+masseinheity);
                 return parameters;
             }
         };
@@ -220,13 +232,17 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jobj = new JSONObject(response.toString());
-                    JSONArray rezepte = jobj.getJSONArray("liste");
+                    JSONArray artikelnamen = jobj.getJSONArray("artikel");
+                    JSONArray artikelmengen = jobj.getJSONArray("menge");
+                    JSONArray artikelmasseinheiten = jobj.getJSONArray("masseinheit");
 
-                    for (int z = 0; z < rezepte.length(); z++) {
-                        JSONObject rezept = rezepte.getJSONObject(z);
+                    for (int z = 0; z < artikelnamen.length(); z++) {
+                        JSONObject artikelobj = artikelnamen.getJSONObject(z);
+                        JSONObject mengeobj = artikelmengen.getJSONObject(z);
+                        JSONObject massobj = artikelmasseinheiten.getJSONObject(z);
 
                         CheckBox checkbox_liste = new CheckBox(getApplicationContext());
-                        checkbox_liste.setText(rezept.getString("Artikelname"));
+                        checkbox_liste.setText(artikelobj.getString("Artikelname")+", "+mengeobj.getInt("Menge")+" "+massobj.getString("Masseinheit"));
                         linearlayoutartikel.addView(checkbox_liste);
                     }
 

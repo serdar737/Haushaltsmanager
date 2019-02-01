@@ -158,6 +158,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(RezeptAnsichtActivity.this, RezeptBearbeitenActivity.class);
                 intent.putExtra("REZEPTNAME", rezeptname);
+                intent.putExtra("REZEPTID", rezeptid);
                 startActivity(intent);
             }
         });

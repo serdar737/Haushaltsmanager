@@ -106,6 +106,8 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
 
         requestQueue3 = Volley.newRequestQueue(getApplicationContext());
 
+        final int rezeptid2 = rezeptidtemp;
+
         StringRequest arequest = new StringRequest(Request.Method.POST, starturl, new Response.Listener<String>() {
 
             @Override
@@ -124,7 +126,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                         final JSONObject masseinheitobj = j_masseinheit.getJSONObject(z);
 
                         zutat = zutatobj.getString("Zutat");
-                        String temp_menge = et_menge.getText().toString();
+                        //String temp_menge = et_menge.getText().toString();
                         menge = mengeobj.getInt("Menge");
                         masseinheit = masseinheitobj.getString("Masseinheit");
 
@@ -134,7 +136,6 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
                     final JSONObject beschreibungobj = j_beschreibung.getJSONObject(0);
 
                     et_beschreibung.setText(beschreibungobj.getString("Beschreibung"));
-                    linearleayoutrezepterstellen.addView(et_beschreibung);
 
                 }
                 catch (JSONException e) {
@@ -150,7 +151,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parameters = new HashMap<String, String>();
-                parameters.put("rezeptid", ""+rezeptid);
+                parameters.put("rezeptid", ""+rezeptid2);
 
                 return parameters;
             }

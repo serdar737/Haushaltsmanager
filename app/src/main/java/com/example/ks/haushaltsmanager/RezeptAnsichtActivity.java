@@ -112,7 +112,6 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                     final JSONObject personenobj = j_personen.getJSONObject(0);
                     //et_personenanzahl.setText(personenobj.getInt("Personenanzahl"));
                     zahl = personenobj.getInt("Personenanzahl");
-                    System.out.println("Zahl: "+zahl);
 
                 }
                 catch (JSONException e) {
@@ -162,17 +161,10 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                         String mengetemp = parts2[0];
 
                         float menge = Float.parseFloat(mengetemp);
-                        System.out.println("Menge float: "+menge);
-                        System.out.println("Zahl: "+zahl);
 
                         float rechne = menge /zahl;
-                        System.out.println("Rechne: "+rechne);
-                        System.out.println("Zahl: "+zahl);
 
                         float ergebnis = rechne * personen;
-                        System.out.println("Ergebnus: "+ergebnis);
-                        System.out.println("Zahl: "+zahl);
-
 
                         ((TextView) v).setText(parts[0] + ", " + ergebnis + " " + parts2[1]);
 

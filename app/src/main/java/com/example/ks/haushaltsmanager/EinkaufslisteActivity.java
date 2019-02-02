@@ -84,7 +84,6 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                     View v = linearlayoutartikel.getChildAt(k);
                     if(v instanceof CheckBox){
                         if(((CheckBox)v).isChecked()){
-                            System.out.println("Abgehakt "+((CheckBox) v).getText());
 
                             final String gekauft = "true";
 

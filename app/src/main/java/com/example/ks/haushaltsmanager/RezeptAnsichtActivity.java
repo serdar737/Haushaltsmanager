@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -34,11 +35,12 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
     boolean menueoffen = false;
     TextView tv_rezeptname, tv_zutat, tv_beschreibung;
     LinearLayout ll_zutaten, ll_beschreibung;
-    RequestQueue requestQueue, requestQueue2;
+    RequestQueue requestQueue, requestQueue2, requestQueue3;
     String url = "http://10.0.2.2:3306/rezeptansicht.php";
     String loeschenurl = "http://10.0.2.2:3306/loescherezept.php";
+    String kochenurl = "http://10.0.2.2:3306/kocherezept.php";
     String rezeptname;
-    int haushaltsid, zahl, rezeptid;
+    int haushaltsid, zahl, rezeptid, personenzahl;
     FloatingActionButton fab_loeschen, fab_bearbeiten, fab_menue, fab_refresh, fab_kochen;
     EditText et_personenanzahl;
 
@@ -110,7 +112,6 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                     ll_beschreibung.addView(tv_beschreibung);
 
                     final JSONObject personenobj = j_personen.getJSONObject(0);
-                    //et_personenanzahl.setText(personenobj.getInt("Personenanzahl"));
                     zahl = personenobj.getInt("Personenanzahl");
 
                 }
@@ -142,35 +143,40 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-                String personentemp = et_personenanzahl.getText().toString();
-                int personen = Integer.parseInt(personentemp);
-
-                for (int k = 0; k < ll_zutaten.getChildCount(); k++) {
-                    View v = ll_zutaten.getChildAt(k);
-                    if (v instanceof TextView) {
-
-                        String artikelsplit = ((TextView) v).getText().toString();
-
-                        String[] parts = artikelsplit.split(", ");
-
-                        String mengetemp1 = parts[1];
-
-                        String[] parts2 = mengetemp1.split(" ");
-
-                        String mengetemp = parts2[0];
-
-                        float menge = Float.parseFloat(mengetemp);
-
-                        float rechne = menge /zahl;
-
-                        float ergebnis = rechne * personen;
-
-                        ((TextView) v).setText(parts[0] + ", " + ergebnis + " " + parts2[1]);
-
-                    }
+                if (et_personenanzahl.getText().toString().equals("")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Bitte gebe eine Personenzahl ein!", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
-                zahl = personen;
+                else {
+                    String personentemp = et_personenanzahl.getText().toString();
+                    int personen = Integer.parseInt(personentemp);
+
+                    for (int k = 0; k < ll_zutaten.getChildCount(); k++) {
+                        View v = ll_zutaten.getChildAt(k);
+                        if (v instanceof TextView) {
+
+                            String artikelsplit = ((TextView) v).getText().toString();
+
+                            String[] parts = artikelsplit.split(", ");
+
+                            String mengetemp1 = parts[1];
+
+                            String[] parts2 = mengetemp1.split(" ");
+
+                            String mengetemp = parts2[0];
+
+                            float menge = Float.parseFloat(mengetemp);
+
+                            float rechne = menge /zahl;
+
+                            float ergebnis = rechne * personen;
+
+                            ((TextView) v).setText(parts[0] + ", " + ergebnis + " " + parts2[1]);
+
+                        }
+                    }
+                    zahl = personen;
+                }
             }
         });
 
@@ -216,6 +222,17 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                if (et_personenanzahl.getText().toString().equals("")) {
+                    personenzahl = zahl;
+                }
+                else {
+                    String temppersonenanzahlu = et_personenanzahl.getText().toString();
+                    personenzahl = Integer.parseInt(temppersonenanzahlu);
+                }
+
+                kochen(rezeptid, haushaltsid, personenzahl);
+                Toast toast = Toast.makeText(getApplicationContext(), "Artikel in Einkaufsliste übertragen!", Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -272,6 +289,37 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
 
         Intent intent = new Intent(RezeptAnsichtActivity.this, RezeptUebersichtActivity.class);
         startActivity(intent);
+    }
+
+    public void kochen(final int id, final int hid, final int person) {
+
+        requestQueue3 = Volley.newRequestQueue(getApplicationContext());
+
+        //holt sich zum passenden Rezept mithilfe der rezeptid welche durch die Intents uebergeben wurde, die Informationen zum Rezept
+        StringRequest kochenrequest = new StringRequest(Request.Method.POST, kochenurl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map <String, String> parameters = new HashMap<String, String>();
+                parameters.put("rezeptid", ""+id);
+                parameters.put("haushaltsid", ""+hid);
+                parameters.put("personenanzahl", ""+person);
+
+                return parameters;
+            }
+        };
+
+        requestQueue3.add(kochenrequest);
     }
 
     @Override

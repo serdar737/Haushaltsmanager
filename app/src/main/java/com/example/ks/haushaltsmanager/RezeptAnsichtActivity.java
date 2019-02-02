@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,9 +23,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +39,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
     String loeschenurl = "http://10.0.2.2:3306/loescherezept.php";
     String rezeptname;
     int haushaltsid, zahl, rezeptid;
-    FloatingActionButton fab_loeschen, fab_bearbeiten, fab_menue, fab_refresh;
+    FloatingActionButton fab_loeschen, fab_bearbeiten, fab_menue, fab_refresh, fab_kochen;
     EditText et_personenanzahl;
 
 
@@ -72,6 +69,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
         fab_menue = findViewById(R.id.fab_rezeptmenue);
         fab_refresh = findViewById(R.id.fab_refresh);
         et_personenanzahl = findViewById(R.id.et_personenanzahlrezept);
+        fab_kochen = findViewById(R.id.fab_rezeptkochen);
 
         //Die Animation Resource Files der Animationen fuer die FABs den Animationsvariabeln zuweisen
         fab_klein_oeffnen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_klein_oeffnen);
@@ -221,21 +219,33 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
             }
         });
 
+        //OnClickListener fuer einen Button, welcher alle benoetigten Zutaten fuer ein Rezept in die Einkaufsliste schreibt, sofern nicht bereits vorhanden
+        fab_kochen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     public void animationstarten() {
         fab_loeschen.startAnimation(fab_klein_oeffnen);
         fab_bearbeiten.startAnimation(fab_klein_oeffnen);
+        fab_kochen.startAnimation(fab_klein_oeffnen);
         fab_loeschen.setClickable(true);
         fab_bearbeiten.setClickable(true);
+        fab_kochen.setClickable(true);
         menueoffen = true;
     }
 
     public void animationbeenden () {
         fab_loeschen.startAnimation(fab_klein_schliessen);
         fab_bearbeiten.startAnimation(fab_klein_schliessen);
+        fab_kochen.startAnimation(fab_klein_schliessen);
         fab_loeschen.setClickable(false);
         fab_bearbeiten.setClickable(false);
+        fab_kochen.setClickable(false);
         menueoffen = false;
     }
 

@@ -40,7 +40,7 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
     String url = "http://10.0.2.2:3306/zeigehaushaltsbestand.php";
     String gurl = "http://10.0.2.2:3306/artikelhaushaltupdaten.php";
     RequestQueue requestQueue, requestQueue2;
-    EditText et_menge, et_verfallsdatum;
+    EditText et_menge, et_verfallsdatum, et_masseinheit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +59,36 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
+        final int hid = haushaltsid;
+        System.out.println("HaushaltsID "+ hid);
+
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
+                System.out.println("Im Response");
+
                 try {
                     JSONObject obj = new JSONObject(response.toString());
-                    JSONArray bestandsliste = obj.getJSONArray("haushaltsbestandsliste");
+
+                    System.out.println("Im Response, nach Object");
+                    JSONArray bestandsliste = obj.getJSONArray("haushaltsbestandliste");
                     JSONArray id = obj.getJSONArray("artikelids");
+                    JSONArray array_menge = obj.getJSONArray("menge");
+                    JSONArray array_mass = obj.getJSONArray("mass");
 
                     for (int z = 0; z < bestandsliste.length(); z++) {
+                        System.out.println("Im Response, in der Schleife, Index: "+z);
                         JSONObject artikel = bestandsliste.getJSONObject(z);
-                        final JSONObject artikelids = id.getJSONObject(z);
+                        JSONObject artikelids = id.getJSONObject(z);
+                        JSONObject menge_obj = array_menge.getJSONObject(z);
+                        JSONObject mass_obj = array_mass.getJSONObject(z);
 
                         final String artikelid = artikelids.getString("ID");
+                        System.out.println("ArtikelID: "+artikelid);
 
                        btn_artikel = new Button(getApplicationContext());
-                       btn_artikel.setText(artikel.getString("Artikelname"));
+                       btn_artikel.setText(artikel.getString("Artikelname")+", "+menge_obj.getInt("Menge")+" "+mass_obj.getString("Masseinheit"));
                        llhaushaltsbestand.addView(btn_artikel);
                        btn_artikel.setOnClickListener(new View.OnClickListener() {
                            @Override
@@ -87,12 +100,16 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
                                et_menge = popupview.findViewById(R.id.et_mengebestand);
                                et_verfallsdatum = popupview.findViewById(R.id.et_verfallsdatum);
                                btn_weiter = popupview.findViewById(R.id.btn_weiter_bestand);
+                               et_masseinheit = popupview.findViewById(R.id.et_masseinheitinfo);
 
                                String tempmenge = et_menge.getText().toString();
                                final String menge = tempmenge;
 
                                String tempdatum = et_verfallsdatum.getText().toString();
                                final String verfallsdatum = tempdatum;
+
+                               String tempmass = et_masseinheit.getText().toString();
+                               final String masseinheit = tempmass;
 
                                popupbuilder.setView(popupview);
                                final AlertDialog dialog = popupbuilder.create();
@@ -120,6 +137,7 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
                                                Map<String, String> parameters = new HashMap<String, String>();
                                                parameters.put("artikelid", ""+artikelid);
                                                parameters.put("menge", menge);
+                                               parameters.put("masseinheit", masseinheit);
                                                parameters.put("verfallsdatum", verfallsdatum);
 
                                                return parameters;
@@ -148,13 +166,14 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                System.out.println("ResponseError bei holen der Sachen");
             }
         })
         {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map <String, String> parameters = new HashMap<String, String>();
-                parameters.put("haushaltsid", ""+haushaltsid);
+                parameters.put("haushaltsid", ""+hid);
 
                 return parameters;
             }

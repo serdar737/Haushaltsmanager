@@ -53,7 +53,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
     RequestQueue requestQueue, requestQueue2, requestQueue3;
 
-    String artikelname;
+    String artikelname, haushaltsname;
     String insertUrl = "http://10.0.2.2:3306/artikelzueinkaufsliste.php";
     String readUrl = "http://10.0.2.2:3306/zeigeeinkaufsliste.php";
     String abhakenUrl = "http://10.0.2.2:3306/artikelhaushalthinzufuegen.php";
@@ -68,11 +68,14 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("sharedprefs", MODE_PRIVATE);
         haushaltsid = prefs.getInt("HaushaltsID", -1);
+        haushaltsname = prefs.getString("Haushaltsname", "Unbekannter Haushalt");
 
         tv_haushaltsname = findViewById(R.id.tv_haushalteinkauf);
         fab_artikelhinzufuegen = findViewById(R.id.fab_artikelhinzufuegen);
         linearlayoutartikel = findViewById(R.id.linearlayoutartikel);
         fab_abgehakt = findViewById(R.id.fab_abhaken);
+
+        tv_haushaltsname.setText(haushaltsname);
 
         leseEinkaufsliste();
 

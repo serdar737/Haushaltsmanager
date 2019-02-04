@@ -26,9 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import static java.lang.Math.round;
 
 /**
  * EinkaufslisteActivity
@@ -47,7 +49,9 @@ public class EinkaufslisteActivity extends AppCompatActivity {
 
     FloatingActionButton fab_artikelhinzufuegen, fab_abgehakt;
 
-    int haushaltsid, menge;
+    int haushaltsid;
+
+    double menge;
 
     LinearLayout linearlayoutartikel;
 
@@ -163,7 +167,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                         }
                         else {
                             artikelname = et_artikelname.getText().toString();
-                            menge = Integer.parseInt(tempmenge);
+                            menge = Double.parseDouble(tempmenge);
                             artikelCheckBoxNeu(menge, masseinheit);
                             dialog.hide();
                         }
@@ -180,12 +184,16 @@ public class EinkaufslisteActivity extends AppCompatActivity {
      * Die Methode artikelCheckBoxNeu erstellt mit der Eingabe des Artikelnamens eine neue Checkbox und fuegt diese
      * dem LinearLayout dynamisch hinzu
      */
-    public void artikelCheckBoxNeu(int mengez, String masseinheitz) {
+    public void artikelCheckBoxNeu(double mengez, String masseinheitz) {
         checkbox = new CheckBox(getApplicationContext());
         checkbox.setText(artikelname+", "+mengez+" "+masseinheitz);
 
         final String artikel = artikelname;
-        final int mengey = mengez;
+        final double mengey = mengez;
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        final double mengedezimal = Double.parseDouble(df.format(mengey));
+
         final String masseinheity = masseinheitz;
         final int haushalt = haushaltsid;
 
@@ -210,7 +218,7 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                 Map <String, String> parameters = new HashMap<String, String>();
                 parameters.put("haushaltsid", ""+haushalt);
                 parameters.put("artikelname", artikel);
-                parameters.put("menge", ""+mengey);
+                parameters.put("menge", ""+mengedezimal);
                 parameters.put("masseinheit", ""+masseinheity);
                 return parameters;
             }
@@ -243,8 +251,13 @@ public class EinkaufslisteActivity extends AppCompatActivity {
                         JSONObject mengeobj = artikelmengen.getJSONObject(z);
                         JSONObject massobj = artikelmasseinheiten.getJSONObject(z);
 
+                        double temp_menge = mengeobj.getDouble("Menge");
+
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        final double mengedezimal = Double.parseDouble(df.format(temp_menge));
+
                         CheckBox checkbox_liste = new CheckBox(getApplicationContext());
-                        checkbox_liste.setText(artikelobj.getString("Artikelname")+", "+mengeobj.getInt("Menge")+" "+massobj.getString("Masseinheit"));
+                        checkbox_liste.setText(artikelobj.getString("Artikelname")+", "+mengedezimal+" "+massobj.getString("Masseinheit"));
                         linearlayoutartikel.addView(checkbox_liste);
                     }
 

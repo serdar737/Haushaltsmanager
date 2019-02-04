@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -101,7 +102,7 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
                         final JSONObject masseinheitobj = j_masseinheit.getJSONObject(z);
 
                         tv_zutat = new TextView(getApplicationContext());
-                        tv_zutat.setText(zutatobj.getString("Zutat")+", "+mengeobj.getInt("Menge")+" "+masseinheitobj.getString("Masseinheit"));
+                        tv_zutat.setText(zutatobj.getString("Zutat")+", "+mengeobj.getDouble("Menge")+" "+masseinheitobj.getString("Masseinheit"));
                         ll_zutaten.addView(tv_zutat);
                     }
 
@@ -165,13 +166,16 @@ public class RezeptAnsichtActivity extends AppCompatActivity {
 
                             String mengetemp = parts2[0];
 
-                            float menge = Float.parseFloat(mengetemp);
+                            double menge = Double.parseDouble(mengetemp);
 
-                            float rechne = menge /zahl;
+                            double rechne = menge /zahl;
 
-                            float ergebnis = rechne * personen;
+                            double ergebnis = rechne * personen;
 
-                            ((TextView) v).setText(parts[0] + ", " + ergebnis + " " + parts2[1]);
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            final double ergebnisdezimal = Double.parseDouble(df.format(ergebnis));
+
+                            ((TextView) v).setText(parts[0] + ", " + ergebnisdezimal + " " + parts2[1]);
 
                         }
                     }

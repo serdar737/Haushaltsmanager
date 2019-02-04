@@ -40,7 +40,8 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
     LinearLayout linearleayoutrezepterstellen;
     String zutat, masseinheit;
     FloatingActionButton fab_zutathinzufuegen;
-    int haushaltsid, benutzerid, rezeptidtemp, rezeptid, menge;
+    int haushaltsid, benutzerid, rezeptidtemp;
+    double menge;
 
     RequestQueue requestQueue, requestQueue2, requestQueue3;
     String insertUrl = "http://10.0.2.2:3306/updaterezept.php";
@@ -91,7 +92,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
 
                         zutat = et_zutat.getText().toString();
                         String temp_menge = et_menge.getText().toString();
-                        menge = Integer.parseInt(temp_menge);
+                        menge = Double.parseDouble(temp_menge);
                         masseinheit = et_masseinheit.getText().toString();
 
                         zutatHinzufuegen(zutat, menge, masseinheit);
@@ -127,7 +128,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
 
                         zutat = zutatobj.getString("Zutat");
                         //String temp_menge = et_menge.getText().toString();
-                        menge = mengeobj.getInt("Menge");
+                        menge = mengeobj.getDouble("Menge");
                         masseinheit = masseinheitobj.getString("Masseinheit");
 
                         zutatHinzufuegen(zutat, menge, masseinheit);
@@ -227,7 +228,7 @@ public class RezeptBearbeitenActivity extends AppCompatActivity {
     }
 
 
-    public void zutatHinzufuegen(String z, int m, String ma) {
+    public void zutatHinzufuegen(String z, double m, String ma) {
 
         TextView tv_zutat = new TextView(getApplicationContext());
         tv_zutat.setText(z+" - "+m+" "+ma);

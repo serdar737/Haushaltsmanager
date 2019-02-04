@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -80,9 +81,13 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
                         JSONObject mass_obj = array_mass.getJSONObject(z);
 
                         final int artikelid = artikelids.getInt("ID");
+                        double temp_menge = menge_obj.getDouble("Menge");
+
+                        DecimalFormat df = new DecimalFormat("#.##");
+                        final double mengedezimal = Double.parseDouble(df.format(temp_menge));
 
                        btn_artikel = new Button(getApplicationContext());
-                       btn_artikel.setText(artikel.getString("Artikelname")+", "+menge_obj.getInt("Menge")+" "+mass_obj.getString("Masseinheit"));
+                       btn_artikel.setText(artikel.getString("Artikelname")+", "+mengedezimal+" "+mass_obj.getString("Masseinheit"));
                        llhaushaltsbestand.addView(btn_artikel);
                        btn_artikel.setOnClickListener(new View.OnClickListener() {
                            @Override
@@ -108,7 +113,7 @@ public class HaushaltsbestandActivity extends AppCompatActivity {
                                        requestQueue2 = Volley.newRequestQueue(getApplicationContext());
 
                                        String tempmenge = et_menge.getText().toString();
-                                       final int menge = Integer.parseInt(tempmenge);
+                                       final double menge = Double.parseDouble(tempmenge);
 
                                        String tempdatum = et_verfallsdatum.getText().toString();
                                        final String verfallsdatum = tempdatum;
